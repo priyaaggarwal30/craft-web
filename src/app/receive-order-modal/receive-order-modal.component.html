@@ -1,0 +1,73 @@
+
+
+
+<div class="edit-modal" >
+  
+  <div mat-dialog-content>
+    <p class="heading">Item Detail</p>
+    <div class="cs-form"> 
+      <div class="cs-table">
+        <div class="sticky-head">
+          <div class="table-head">
+            <table class="sno-border">
+              <tr >
+                <th class="w50 text-center">S.No</th>
+                <th class="w90 text-center">Item Name</th>
+                <th class="w90 text-center">Brand</th>
+                <th class="w90 text-center">Size</th>
+                <!-- <th class="w80 text-center">Item code</th> -->
+                <th class="w80 text-center" >Received Qty</th>
+                
+              </tr>
+            </table>
+          </div>
+          
+        </div>
+        
+        <div class="table-container">
+          <div class="table-content">
+            <table class="sno-border">
+              <tr *ngFor="let row of receiving_detail['item'];let i=index">
+                <td class="w50 text-center">{{i+1}}</td>
+                <td class="w90 text-center">{{row.item_name}}</td>
+                <td class="w90 text-center">{{row.brand}}</td>
+                <td class="w90 text-center">{{row.unit_of_measurment}}</td>
+                <!-- <td class="w80 text-center">{{row.item_code}}</td> -->
+                <td class="w80 text-center">{{row.qty}}</td>
+                
+              </tr>
+              
+              
+              <ng-container *ngFor="let lead of skelton">
+                <tr class="sk-loading"  *ngIf="loader">
+                  <td class="w50"><div>&nbsp;</div></td>
+                  <td class="w90"><div>&nbsp;</div></td>
+                  <td class="w90"><div>&nbsp;</div></td>
+                  <td  class="w90"><div>&nbsp;</div></td>
+                  <td  class="w80"><div>&nbsp;</div></td>
+                  <td  class="w80"><div>&nbsp;</div></td>
+                </tr>
+              </ng-container>
+            </table>
+          </div>
+        </div>
+        
+        
+        <div class="no-data" *ngIf="data_not_found==true">
+          <img src="assets/img/no-data.gif" alt="">
+          <p>Data not <span>available !</span></p>
+        </div>
+      </div>
+      
+      
+    </div>
+  </div>
+  
+  <div mat-dialog-actions>
+    <button mat-button color="warn" [mat-dialog-close]="false">Cancel</button>
+    <!-- <button mat-button color="accent"(click)="update_status()" [disabled]="!data.status || (data.status=='Reject' && !(data.reason))">Save</button> -->
+    <!-- <button mat-button color="accent"(click)="update_status()" [disabled]="(!(data.status) || !((data.status=='Reject') && (data.reason))) ">Save</button> -->
+    
+    
+  </div>
+</div>

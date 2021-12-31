@@ -1,0 +1,146 @@
+<div class="main-container">
+    <div class="middle-container">
+        <div class="page-heading">
+            <div class="heading-text bc-space">
+                <div class="back-btn" (click)="back()" >
+                    <a mat-button ><i class="material-icons">west</i></a>
+                </div>
+                <h2>Raw Material</h2>
+                <!-- <div *ngIf="id == 0">
+                    <p>Add New</p>
+                </div> -->
+                <!-- <div *ngIf="id != 0">
+                    <p>update</p>
+                </div> -->
+                
+            </div>
+        </div>
+    </div>
+    
+    
+    <div class="container-outer">
+        <form #f="ngForm" (ngSubmit)="f.valid && submit()">
+            <div class="container tab-container">
+                
+                
+                <div class="row">
+                    <div class="col s8 ml200">
+                        <div class="sprate-box cs-form">
+                            <div class="cs-heading">
+                                <h2>Basic Information</h2>
+                                <span class="required">Indicates required fields ( <sup>*</sup> )</span>
+                            </div>
+                            <mat-divider class="left-right-15 mt10"></mat-divider>
+                            <div class="row mt10">
+                                <div class="col s12">
+                                    <div class="row">
+                                        <div class="col s4">
+                                            <mat-form-field class="cs-input" appearance="outline" >
+                                                <mat-label>Select Category</mat-label>
+                                                <mat-select  name="cateogry" #category="ngModel" [(ngModel)]="data.category" [ngClass]="{'has-error' : !(category.invalid) } " required>
+                                                    <mat-option value="{{'Dry Good'}}">Dry Good</mat-option>
+                                                    <mat-option value="{{'Wet Good'}}">Wet Good</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col s4">
+                                            <mat-form-field class="cs-input" appearance="outline" >
+                                                <mat-label>Select Type</mat-label>
+                                                <mat-select name="material_type"  #material_type="ngModel" [(ngModel)]="data.material_type" [ngClass]="{'has-error' : !(material_type.invalid) } " required>
+                                                    <mat-option value="{{'Common'}}">Common</mat-option>
+                                                    <mat-option value="{{'State Wise'}}">State Wise</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col s4">
+                                            <mat-form-field class="cs-input" appearance="outline" >
+                                                <mat-label>Select Brand</mat-label>
+                                                <mat-select   name="brand"  #brand="ngModel" [(ngModel)]="data.brand" [ngClass]="{'has-error' : !(brand.invalid) } " required>
+                                                    <mat-option *ngFor="let bran of brand_data" value="{{bran.brand_name}}">{{bran.brand_name}}</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                        
+                                        
+                                    </div>    
+                                </div>
+                            </div>
+                            <div class="row mt10">
+                                <div class="col s12">
+                                    <div class="row">
+                                        <div class="col s4" >
+                                            <mat-form-field class="cs-input" appearance="outline">
+                                                <mat-label>Item Name</mat-label>
+                                                <input matInput placeholder="Type Here ..." type="text" name="item_name" #item_name="ngModel" [(ngModel)]="data.item_name" [ngClass]="{'has-error' : !(item_name.invalid) } " required>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col s4">
+                                            <mat-form-field class="cs-input" appearance="outline">
+                                                <mat-label>Item Code</mat-label>
+                                                <input matInput placeholder="Type Here ..." type="text" name="item_code" #item_code="ngModel" [(ngModel)]="data.item_code" [ngClass]="{'has-error' : !(item_code.invalid) } " required>
+                                            </mat-form-field>
+                                        </div>
+                                        
+                                        <div class="col s4" >
+                                            <mat-form-field class="cs-input" appearance="outline">
+                                                <mat-label> Qty</mat-label>
+                                                <input matInput placeholder="Type Here ..." type="number" name="qty" #qty="ngModel" [(ngModel)]="data.qty" [ngClass]="{'has-error' : !(qty.invalid) } " required>
+                                                
+                                            </mat-form-field>
+                                            
+                                        </div>
+                                        
+                                    </div>
+                                    
+                                </div>
+                                
+                                
+                            </div>
+                            
+                            <div class="row mt10">
+                                <div class="col s12">
+                                    <div class="row">
+                                        <div class="col s6">
+                                            <mat-form-field class="cs-input" appearance="outline">
+                                                <mat-label>Size</mat-label>
+                                                <input matInput placeholder="Type Here ..." type="text" name="measurement" #measurement="ngModel" [(ngModel)]="data.measurement" [ngClass]="{'has-error' : !(measurement.invalid) } " required>
+                                            </mat-form-field>
+                                        </div>
+                                        
+                                        <div class="col s6" >
+                                            <mat-form-field class="cs-input" appearance="outline">
+                                                <mat-label>Lead Time(IN DAYS)</mat-label>
+                                                <input matInput placeholder="Type Here ..." type="text" name="lead_time" #lead_time="ngModel" [(ngModel)]="data.lead_time" [ngClass]="{'has-error' : !(lead_time.invalid) } " required>
+                                            </mat-form-field>
+                                        </div>
+                                    </div>    
+                                </div>
+                            </div>
+                            
+                            
+                        </div>
+                        
+                        <div class="col s12">
+                            <div class="cs-btn fixedd mt32 text-right">
+                                <div class="in-btn" >
+                                    <button mat-raised-button color="accent" type="submit"   >Save</button>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- </div> -->
+                
+                <div *ngIf="loader">
+                    <mat-spinner class="loader">
+                        <div>
+                            <p>Loading....</p>
+                        </div>
+                    </mat-spinner>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,230 @@
+<div class="main-container">
+    <div class="middle-container">
+        <div class="page-heading">
+            <div class="heading-text bc-space">
+                <div class="back-btn"  (click)="back()">
+                    <a mat-button ><i class="material-icons">west</i></a>
+                </div>
+                <h2>Finish Good</h2>
+            </div>
+        </div>
+    </div>
+    
+    
+    <div class="container-outer">
+        <form #f="ngForm" (ngSubmit)="f.valid && save_production_data()">
+            <div class="container tab-container">
+                <div class="row">
+                    <div class="col s12">
+                        <div class="sprate-box cs-form">
+                            <div class="cs-heading">
+                                <h2>Finish Good Information</h2>
+                                <span class="required">Indicates required fields ( <sup>*</sup> )</span>
+                            </div>
+                            <mat-divider class="left-right-15 mt10"></mat-divider>
+                            <div class="row mt10">
+                                <div class="col s12">
+                                    <div class="row">
+
+                                        <div class="col s2" >
+                                           
+                                            <mat-form-field class="cs-input"  appearance="outline">
+                                                <mat-label>State</mat-label>
+                                                <mat-select  name="state" placeholder="State" #state="ngModel" [(ngModel)]="production_data.state" [ngClass]="{'has-error' : !(state.invalid) } " required  >
+                                                  <mat-option   *ngFor="let state of state_list" value="{{state.state_name}}">{{state.state_name}}</mat-option>
+                                                </mat-select>
+                                              </mat-form-field>
+                                        </div>
+
+                                        <div class="col s2">
+                                            <mat-form-field class="cs-input" appearance="outline">
+                                                <mat-label>Select Category</mat-label>
+                                                <mat-select name="selected_category" placeholder="category" #selected_category="ngModel" [(ngModel)]="production_data.selected_category" [ngClass]="{'has-error' : !(selected_category.invalid) } " required  >
+                                                    <mat-option *ngFor="let cat of category_data" value="{{cat.category_name}}">{{cat.category_name}}</mat-option>
+                                                   
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                        
+                                        <div class="col s2" >
+                                            <mat-form-field class="cs-input" appearance="outline">
+                                                <mat-label>Select Brand</mat-label>
+                                                <mat-select name="selected_brand" placeholder="brand" #selected_brand="ngModel" [(ngModel)]="production_data.selected_brand" [ngClass]="{'has-error' : !(selected_brand.invalid) } " required >
+                                                    <mat-option *ngFor="let bran of brand_data" value="{{bran.brand_name}}">{{bran.brand_name}}</mat-option>
+                                                   
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                        
+                                        <div class="col s2">
+                                            <mat-form-field class="cs-input" appearance="outline" >
+                                                <mat-label>Size</mat-label>
+                                                <input type="text" name="size" matInput placeholder="" #size="ngModel"  [(ngModel)]="production_data.size" required >
+                                            </mat-form-field>
+                                            
+                                        </div>
+                                        
+                                        <!-- <div class="col s2" >
+                                            <mat-form-field class="cs-input" appearance="outline" >
+                                                <mat-label>Item Code</mat-label>
+                                                <input type="text" name="item_code" matInput placeholder="" #item_code="ngModel" [(ngModel)]="production_data.item_code" required >
+                                            </mat-form-field>
+                                        </div> -->
+                                        
+                                        <div class="col s2">
+                                            <mat-form-field class="cs-input" appearance="outline" >
+                                                <mat-label>MRP</mat-label>
+                                                <input type="text" name="mrp" matInput placeholder="" #mrp="ngModel" [(ngModel)]="production_data.mrp"  >
+                                            </mat-form-field>
+                                        </div>
+
+                                        <div class="col s2" >
+                                            <mat-form-field class="cs-input" appearance="outline" >
+                                                <mat-label>Stock Alert</mat-label>
+                                                <input type="text" name="stock_alert" matInput placeholder="" #stock_alert="ngModel" [(ngModel)]="production_data.stock_alert" required >
+                                            </mat-form-field>
+                                        </div>
+                                        
+                                      
+                                    </div>    
+                                </div>
+                                <div class="row">
+                                    <div class="col s12">
+                                        <div class="cs-file">
+                                            <p>Upload Image</p>
+                                            <ul class="product-images">
+                                                <li class="multi-images">
+                                                    <label class="cs-file-img" *ngFor="let val of urls; let i = index">
+                                                        <!-- <img height="75" width="75" alt=""> -->
+                                                        <!-- <img src="https://static.hollywoodreporter.com/sites/default/files/2012/12/img_logo_blue.jpg" alt="your image"> -->
+                                                        <img  *ngIf="!val.actual_image_name" [src]="val" alt="your image">
+                                                        <img  *ngIf="val.actual_image_name" src="http://phpstack-83335-2231038.cloudwaysapps.com/api/uploads/Products/{{val.actual_image_name}}" alt="">
+                                                        <span class="cancel-icon">
+                                                            <a class="close"><i class="material-icons dp48"
+                                                                (click)="delete_img(i)">clear</i></a>
+                                                        </span>
+                                                     
+                                                    </label>
+        
+                                                    <label class="cs-file-img default" *ngIf="urls.length != 1">
+                                                        <i class="material-icons">cloud_upload</i>
+                                                        <input type="file" name="image" placeholder="Upload file"
+                                                            accept=".png,.jpg,.jpeg" multiple style="display: none;"
+                                                            (change)="insertImage($event)" >
+                                                            
+                                                    </label>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col s12">
+                        <div class="sprate-box cs-form">
+                            <div class="cs-heading">
+                                <h2>Raw Material Consumption </h2>
+                                <span class="required">Indicates required fields ( <sup>*</sup> )</span>
+                            </div>
+                            <mat-divider class="left-right-15 mt10"></mat-divider>
+                            
+                            <div class="row mt10">
+
+                                <div class="col s12">
+                                    <div class="row">
+                                        
+                                        <div class="col s5" >
+                                            <mat-form-field class="cs-input" appearance="outline">
+                                                <mat-label>Raw Material</mat-label>
+                                                <mat-select name="raw_id" placeholder="salesUser" #raw_id="ngModel" [(ngModel)]="temp_selected_raw_material_data.raw_id"  [ngClass]="{'has-error' : !(raw_id.invalid) } " [required]="!selected_raw_material_data.length">
+                                                    <div class="search-block">
+                                                        <input type="text" name="search" placeholder="Search.." (input)="filter_dr(tmpsearch.search)" #search="ngModel"
+                                                            [(ngModel)]="tmpsearch.search">
+                                                    </div>
+                                                    <mat-option disabled="">Select Raw Material</mat-option>
+                                                    <mat-option *ngFor="let unit of raw_material_data" value="{{unit.id}}" (click)="temp_selected_raw_material_data.raw_material_name = unit.item_name;temp_selected_raw_material_data.brand = unit.brand;temp_selected_raw_material_data.unit_of_measurment = unit.unit_of_measurment;">{{unit.item_name}}{{unit.brand ? '-'+unit.brand:''}}{{unit.unit_of_measurment ? '-'+unit.unit_of_measurment : ''}}</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="col s5">
+                                            <mat-form-field class="cs-input" appearance="outline">
+                                                <mat-label>Raw Material Quantity</mat-label>
+                                                <input type="text" name="raw_material_qty" matInput placeholder="" #raw_material_qty="ngModel"  [(ngModel)]="temp_selected_raw_material_data.raw_material_qty" [required]="!selected_raw_material_data.length">
+                                            </mat-form-field>
+                                        </div>
+                                        
+                                        <div class="col s2" >
+                                            <a id="add_button" class="add-item wp50" mat-raised-button (click)="add_raw_material_into_array()"  [disabled]="!temp_selected_raw_material_data.raw_material_name || !temp_selected_raw_material_data.raw_material_qty" >Add To List</a>
+                                        </div>
+                                    </div>    
+                                </div>
+                                
+                                <div class="col s12" *ngIf="selected_raw_material_data.length"  >
+                                    <div class="sprate-box  pb0">
+                                        
+                                        <div class="cs-table left-right-10">
+                                            <div class="sticky-head border-top">
+                                                <div class="table-head">
+                                                    <table>
+                                                        <tr>
+                                                            <th class="w30 text-center"></th>
+                                                            <th>Raw Material Name</th>
+                                                            <th class="w110 text-center">Qty.</th>
+                                                            <th class="w70">Delete</th>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="table-container" *ngIf="selected_raw_material_data.length>0">
+                                                <div class="table-content none-shadow">
+                                                    <table>
+                                                        <tr *ngFor="let raw_material_data of selected_raw_material_data; let i = index">
+                                                            <td class="w30 text-center">{{i+1}}</td>
+                                                            <td>{{raw_material_data.raw_material_name}}-{{raw_material_data.brand}}-{{raw_material_data.unit_of_measurment?raw_material_data.unit_of_measurment:''}}</td>
+                                                            <td class="w110 text-center"> {{raw_material_data.raw_material_qty}}</td>
+                                                            <td class="w70 text-center" >
+                                                                <button mat-button class="delete-mat" type="button"><i class="material-icons red-clr"(click)="delete_raw_material_data(i)">delete_sweep</i></button>
+                                                            </td>
+                                                        </tr>  
+                                                    </table>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="no-data mt70"  *ngIf="selected_raw_material_data.length==0">
+                                                <p>Raw Material Consumption <span>Not Available !</span></p>
+                                            </div>
+                                            
+                                        </div>
+                                        
+                                    </div>    
+                                </div>
+                              
+                            </div>
+                            
+                        </div>
+                        
+                        <div class="col s12" >
+                            <div class="cs-btn fixedd mt32 text-right">
+                                <div class="in-btn" >
+                                    <button *ngIf="id==0" id="add_button" class="add-item wp100" mat-raised-button  type="submit">Save</button>
+                                    <button  *ngIf="id!=0" id="add_button" class="add-item wp100" mat-raised-button  type="submit">Update</button>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,215 @@
+<div class="main-container" >
+  <div class="middle-container mb0">
+    <div class="page-heading">
+      <div  class="heading-text bc-space">
+        <div class="back-btn" (click)="back()">
+            <a mat-button ><i class="material-icons">west</i></a>
+        </div>
+        <h2>Add Order</h2>
+    </div>
+     
+    </div>
+  </div>
+  <div class="container-outer">
+    
+      <div class="container" >
+        <div class="sprate-box ">
+          <div class="cs-heading">
+            <h2>BASIC INFORMATION</h2>
+            <span class="required">Indicates required fields ( <sup>*</sup> )</span>
+          </div>
+          <mat-divider class="left-right-15 mt10"></mat-divider>
+          <div class="cs-form mt10">
+            <div class="row">
+              
+              <div class="col s2">
+                <mat-form-field class="cs-input" appearance="outline">
+                  <mat-label>Select Type</mat-label>
+                  <mat-select name="dr_type" #dr_type="ngModel" [(ngModel)]="search.dr_type" (ngModelChange)="get_distributor_list()">
+                    <mat-option disabled="">Select Type</mat-option>
+                    <mat-option value="1">Distributor/Dealer</mat-option>
+                    <mat-option value="7">Direct Dealer</mat-option>
+                 
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              
+              <div class="col s2">
+                <mat-form-field class="cs-input" appearance="outline" >
+                  <mat-label  *ngIf="!data.dr_type">Company Name</mat-label>
+                  <mat-label *ngIf="data.dr_type == '1'">Distributor/Dealer</mat-label>
+                  <mat-label *ngIf="data.dr_type == '7'">Direct Dealer</mat-label>
+                  <mat-select name="company_name"  #company_name="ngModel"  [(ngModel)]="search.company_name" >
+                    <div class="search-block">
+                      <input type="text" name="Company_namee" placeholder="Search.." (input)="filter_dr(company_namee)" #Company_namee="ngModel" [(ngModel)]="company_namee">
+                    </div>
+                     <mat-option *ngFor="let leadData of dr_list" (click)="get_products()" value="{{leadData.id}}">{{leadData.company_name}}</mat-option>
+                    
+                  </mat-select>
+                </mat-form-field>
+              </div>
+          </div>
+        </div>
+        
+        <div class="sprate-box pb0 mt10">
+          <div class="cs-heading">
+            <h2>PRODUCT INFORMATION</h2>
+            <span class="required">Indicates required fields ( <sup>*</sup> )</span>
+          </div>
+          <mat-divider class="left-right-15 mt10"></mat-divider>
+          <div class="cs-form mt10">
+            <div class="row">
+              
+              <div class="col s3">
+                <mat-form-field class="cs-input" appearance="outline">
+                  <mat-label>Product Name</mat-label>
+                  <mat-select name="Product" #Product="ngModel" [(ngModel)]="data.Product"  >
+                    <mat-option *ngIf='!noProduct' disabled="">Select Product</mat-option>
+                    <mat-option *ngIf='noProduct' disabled="">No data Found</mat-option>
+                    <mat-option *ngFor="let productData of productlist" (click)="productName=productData.product_name;productCode=productData.product_code; data.gstPercentage = conInt(productData.gst);get_product_size()" value="{{productData.id}}">{{productData.product_name}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+               
+              </div>
+              
+              <div class="col s3">
+                <mat-form-field class="cs-input" appearance="outline" >
+                  <mat-label>{{productName?productName:''}} Size</mat-label>
+                  <mat-select name="productSize" placeholder="Lead Name" #productSize="ngModel"  [(ngModel)]="data.productSize" >
+                    <mat-option *ngIf='!noSize' disabled="">Select Size</mat-option>
+                    <mat-option *ngIf='noSize' disabled="">No data Found</mat-option>
+                    <mat-option *ngFor="let sizeData of size_List" (click)="data.qty = '0';data.price =sizeData.rate;(data.amount=conInt(data.qty)*conInt(data.price)) " value="{{sizeData.product_size}}">{{sizeData.product_size}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              
+              </div>
+              
+              <div class="col s1">
+                <mat-form-field class="cs-input"  appearance="outline">
+                  <mat-label>Quantity</mat-label>
+                  <input matInput type="text" onkeypress="return event.charCode>=48 && event.charCode<=57 || event.charCode == 46" placeholder="Type Here ..." name="qty" #qty="ngModel" [(ngModel)]="data.qty" (ngModelChange)="data.amount=conInt(data.qty)*conFloat(data.price); data.gst = (conInt(data.amount) * conInt(data.gstPercentage) / 100)" > 
+                </mat-form-field>
+               
+              </div>
+
+              <div class="col s1">
+                <mat-form-field class="cs-input"  appearance="outline">
+                  <mat-label>GST %</mat-label>
+                  <input matInput type="text" onkeypress="return event.charCode>=48 && event.charCode<=57" placeholder="Type Here ..." name="gstPercentage" #gstPercentage="ngModel" [(ngModel)]="data.gstPercentage" (ngModelChange)=" data.gst = (conInt(data.amount) * conInt(data.gstPercentage) / 100)" required> 
+                </mat-form-field>
+              
+              </div>
+
+              
+              <div class="col s2">
+                <mat-form-field class="cs-input"  appearance="outline">
+                  <mat-label>Price</mat-label>
+                  <input matInput type="text" onkeypress="return event.charCode>=48 && event.charCode<=57 || event.charCode == 46" placeholder="Type Here ..." name="price" #price="ngModel" [(ngModel)]="data.price" (ngModelChange)="data.amount=conInt(data.qty)*conFloat(data.price); data.gst = (conInt(data.amount) * conInt(data.gstPercentage) / 100)" required readonly> 
+                </mat-form-field>
+               
+              </div>
+              
+              <div class="col s2">
+                <div class="df">
+                  <div class="wp100">
+                    <mat-form-field class="cs-input"  appearance="outline">
+                      <mat-label>Amount</mat-label>
+                      <input matInput type="text" onkeypress="return event.charCode>=48 && event.charCode<=57 " placeholder="Type Here ..." name="amount" #amount="ngModel" [(ngModel)]="data.amount" readonly> 
+                    </mat-form-field>
+                  </div>
+                  <button mat-raised-button class="add-item ml10" [disabled]="!search.dr_type || !search.company_name || !data.Product || !data.productSize || !data.qty || !data.gstPercentage || !data.price || !data.amount" (click)="addToList()" type="submit"><i class="material-icons">add</i></button>
+                </div>
+              </div>
+              
+            </div>
+            <div class="cs-table left-right-10" *ngIf="quotationData.length>0">
+              <div class="sticky-head">
+                <div class="table-head border-top">
+                  <table>
+                    <tr>
+                      <th class="w50 text-center">S. No</th>
+                      <th class="">Product Name</th>
+                      <th class="w200">Product Size</th>
+                      <th class="w50 text-center">Qty</th>
+                      <th class="w100 text-right">Price</th>
+                      <th class="w120 text-right">Amount</th>
+                      <th class="w120 text-right">Gst Amount</th>
+                      <th class="w120 text-right">Total Amount</th>
+                      <th class="w50 text-center"></th>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+              
+              <div class="table-container">
+                <div class="table-content">
+                  <table>
+                    <tr *ngFor="let QData of quotationData ; let i = index">
+                      <td class="w50 text-center">{{i+1}}</td>
+                      <td class="">{{QData.productName}}</td>
+                      <td class="w200">{{QData.productSize}}</td>
+                      <td class="w50 text-center" >{{QData.qty}}</td>
+                      <td class="w100 text-right">&#x20B9; {{QData.price |number:'1.2-2'}} /-</td>
+                      <td class="w120 text-right">&#x20B9; {{QData.amount |number:'1.2-2'}} /-</td>
+                      <td class="w120 text-right">&#x20B9; {{QData.gst |number:'1.2-2'}}({{QData.gstPercentage+' %' }}) </td>
+                      <td class="w120 text-right">&#x20B9; {{QData.total_amount |number:'1.2-2'}} /-</td>
+                      <td class="w50 text-center">
+                        <button mat-button class="delete-mat"><i class="material-icons red-clr"
+                          (click)="deleteQuotationDetail(i)">delete_sweep</i></button>
+                        </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        
+        </div>
+      <div class="left-auto">
+        <div class="row">         
+          <div class="col s8"></div>               
+          <div class="col s4">
+            <div class="summary summary mt35 pl45">
+              <table>
+                <tr>
+                  <td>Total Qty</td>
+                  <td class="text-center"><strong>:</strong></td>
+                  <td class="text-right"><strong>{{totalQty}}</strong></td>
+                </tr>
+                <tr>
+                  <td>Total Gst Amount</td>
+                  <td class="text-center"><strong>:</strong></td>
+                  <td class="text-right"><strong>&#x20B9; {{totalGST_total}}/-</strong></td>
+                </tr>
+                <tr>
+                  <td>Sub Total</td>
+                  <td class="text-center"><strong>:</strong></td>
+                  <td class="text-right"><strong>&#x20B9; {{totalSub_total}}/-</strong></td>
+                </tr>
+                
+                <tr>
+                  <td>Grand Total</td>
+                  <td class="text-center"><strong>:</strong></td>
+                  <td class="text-right"><strong>&#x20B9; {{grandTotal}}/-</strong></td>
+                </tr>
+              </table>
+            </div>
+            
+            <div class="row">
+              <div class="col s12">
+                <div class="cs-btn fixedd mt32 text-right">
+                  <div class="in-btn">
+                    <button mat-raised-button color="accent" type="button" (click)="(quotationData.length == 0)?'':saveQuotation()">Save</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+

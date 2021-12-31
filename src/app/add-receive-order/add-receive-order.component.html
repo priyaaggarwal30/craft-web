@@ -1,0 +1,202 @@
+<div *ngIf="loader" class="spiner-bg">
+  <mat-spinner class="loader ">
+    <div>
+      <p>Loading....</p>
+    </div>
+  </mat-spinner>
+</div>
+<div class="main-container" >
+  <div class="middle-container">
+    <div class="page-heading">
+      <div class="heading-text">
+        <h2>Receive Order</h2>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="container-outer">
+    <div class="container tab-container" >
+      
+      <form #f="ngForm" (ngSubmit)="f.valid && save()" >
+        <div class="row">
+          <div class="col s12">
+            <div class="sprate-box cs-form">
+              <div class="cs-heading">
+                <h2>Invoice Detail</h2>
+                
+                <span class="required">Indicates required fields ( <sup>*</sup> )</span>
+              </div>
+              <mat-divider class="left-right-15 mt10"></mat-divider>
+              <div class="row mt10">
+                <div class="col s10">
+
+                  <div class="row">
+                    <!-- <div class="col s6">
+                      <mat-form-field class="cs-input" appearance="outline">
+                        <mat-label>Order Id</mat-label>
+                        <input matInput placeholder="Type Here ..."   name="order_id" type="text" #id="ngModel"   [(ngModel)]="receive_data.id" [ngClass]="{'has-error' : !(id.invalid)} " required>
+                      </mat-form-field>
+                    </div> -->
+                    <div class="col s4">
+                      <mat-form-field class="cs-input" appearance="outline" >
+                        <mat-label>Invoice date</mat-label>
+                        <input matInput [matDatepicker]="invoice_date" [max]="today_date" name="date" #invoice_date="ngModel"  [(ngModel)]="data.invoice_date" required>
+                        <mat-datepicker-toggle matSuffix [for]="invoice_date"></mat-datepicker-toggle>
+                        <mat-datepicker #invoice_date></mat-datepicker>
+                      </mat-form-field>
+                    </div>
+
+                    <div class="col s4">
+                      <mat-form-field class="cs-input" appearance="outline">
+                        <mat-label>Invoice Number</mat-label>
+                        <input matInput placeholder="Type Here ..." name="invoice_no" type="text" #invoice_no="ngModel"
+                          [(ngModel)]="data.invoice_no" [ngClass]="{'has-error' : !(invoice_no.invalid) } " required>
+                      </mat-form-field>
+                    </div>
+                    <div class="col s4">
+                      <mat-form-field class="cs-input" appearance="outline">
+                        <mat-label>Invoice Amount</mat-label>
+                        <input matInput placeholder="Type Here ..." name="receive_amount" type="text" #invoice_amount="ngModel"
+                          [(ngModel)]="data.invoice_amount" [ngClass]="{'has-error' : !(invoice_amount.invalid)}" required>
+                      </mat-form-field>
+                    </div>
+                     
+                  </div> 
+                  <div class="row" >
+                    <!-- <div class="col s4">
+                      <mat-form-field class="cs-input" appearance="outline" >
+                        <mat-label>Vendor Name</mat-label>
+                        <input matInput placeholder="Type Here ..."   name="vendor_name" type="text" #vendor_name="ngModel"  [(ngModel)]="receive_data.vendor_name" [ngClass]="{'has-error' : !(vendor_name.invalid) } "  required>
+                      </mat-form-field>
+                    </div> -->
+                   
+                  </div>
+                               
+                </div>
+                
+                <div class="col s2">
+                  <div class="cs-file" >
+                    <p>Invoice Image</p>
+                    <ul class="product-images">
+                      <li class="multi-images">
+                        <label class="cs-file-img"  *ngFor="let val of urls; let i = index">
+                          <img height="75" width="75" [src]="val"  alt="">
+                          <span  class="cancel-icon">
+                            <a class="close" (click)="delete_img(i)"><i class="material-icons dp48">clear</i></a>
+                          </span>
+                        </label>
+                        
+                        <label class="cs-file-img default">
+                          <i class="material-icons">cloud_upload</i>
+                          <input type="file" (change)="insertImage($event)" name="image" placeholder="Upload file" accept=".png,.jpg,.jpeg"  style="display: none;"> 
+                        </label>
+                      </li>
+                    </ul>
+                    
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+            
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col s12">
+              <div class="sprate-box cs-form">
+                  <div class="cs-heading">
+                      <h2>Receiving Information </h2>
+                      <span class="required">Indicates required fields ( <sup>*</sup> )</span>
+                  </div>
+                  <mat-divider class="left-right-15 mt10"></mat-divider>
+                  
+                  <div class="row mt10">
+                      
+                      <div class="col s12">
+                          <div class="sprate-box  pb0">
+                              
+                              <div class="cs-table left-right-10">
+                                  <div class="sticky-head border-top">
+                                      <div class="table-head">
+                                          <table>
+                                              <tr>
+                                                  <th class="w50 text-center">S.No</th>
+                                                  <th>Item  Name</th>
+                                                  <th>Brand</th>
+                                                  <th class="w100">Size</th>
+                                                  <th class="w100">state</th>
+                                                  <th class="w100">Lead time</th>
+                                                  <th class="w100">Lead Time</th>
+                                                  <th class="w110 text-center">Total Order Qty.</th>
+                                                  <th class="w110 text-center">Total Received Qty.</th>
+                                                  <th class="w110 text-center">Total Pending Qty.</th>
+                                                  <th class="w110 text-center">Receive Qty.</th>
+                                                  <!-- <th class="w70">View Detail</th> -->
+                                              </tr>
+                                          </table>
+                                      </div>
+                                  </div>
+                                  
+                                  <div class="table-container" >
+                                      <div class="table-content none-shadow">
+                                          <table>
+                                               <tr *ngFor="let list of this.receive_data['order_item'] let i = index">
+                                                  <td class="w50 text-center">{{i+1}}</td>
+                                                  <td>{{list.raw_name}}</td>
+                                                  <td>{{list.brand}}</td>
+                                                  <td class="w100">{{list.unit_of_measurement}}</td>
+                                                  <td class="w100">{{list.state_name?list.state_name:'--'}}</td>
+                                                  <td class="w100">{{list.lead_time + ' Days '}}</td>
+                                                  <td class="w100">{{list.tentative_time|date:'dd-MM-yyyy'}}</td>
+                                                  <td class="w110 text-center"> {{list.qty}}</td>
+                                                  <td class="w110 text-center"> {{list.received_qty}}</td>
+                                                  <td class="w110 text-center"> {{list.pending_qty}}</td>
+                                                  <td class="w110 text-center">
+                                                   <input class="w80" type="number" name="receive_qty{{i}}"  #receive_qty="ngModel" [(ngModel)]="list.receive_qty" (keyup)="temp_qty(i)" >
+                                                  </td>
+                                                  <!-- <td class="w70 text-center" >
+                                                      <button mat-button class="delete-mat" type="button" (click)="view_receive_list(i)"><i class="material-icons red-clr">save</i></button>
+                                                  </td> -->
+                                              </tr>
+                                          </table>
+                                      </div>
+                                  </div>
+                                  
+                                  <!-- <div class="no-data mt70"  >
+                                      <p>Raw Material Information <span>Not Available !</span></p>
+                                  </div> -->
+                                  
+                              </div>
+                              
+                          </div>    
+                      </div>
+                      
+                  </div>
+                  
+              </div>
+              
+              <div class="col s12" >
+                  <div class="cs-btn fixedd mt32 text-right">
+                      <div class="in-btn" >
+                          <button mat-raised-button color="accent" type="submit">Save</button>
+                      </div>
+                      
+                  </div>
+              </div>
+          </div>
+      </div>
+      
+
+    
+        
+      
+        
+        
+      </form>
+    </div>
+  </div>
+</div>
+

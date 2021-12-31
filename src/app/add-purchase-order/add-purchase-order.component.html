@@ -1,0 +1,214 @@
+<div class="main-container">
+  <div class="middle-container">
+    <div class="page-heading">
+      <div class="heading-text bc-space">
+        <div class="back-btn" (click)="back()">
+          <a mat-button ><i class="material-icons">west</i></a>
+        </div>
+        <h2>Add Purchase Order </h2>
+        
+      </div>
+    </div>
+  </div>
+  
+  <div class="container-outer">
+    <form #f="ngForm">
+      <div class="container tab-container">
+        <div class="row">
+          <div class="col s12">
+            <div class="sprate-box cs-form">
+              <div class="cs-heading">
+                <h2> Basic Information</h2>
+                <span class="required">Indicates required fields ( <sup>*</sup> )</span>
+              </div>
+              <mat-divider class="left-right-15 mt10"></mat-divider>
+              <div class="row mt10">
+                <div class="col s12">
+                  <div class="row">
+                    <div class="col s6" >
+                      <mat-form-field class="cs-input" appearance="outline">
+                        <mat-label>Select Unit</mat-label>
+                        <mat-select name="organization" [(ngModel)]="order_detail.organization" [disabled]="id!=0">
+                          <mat-option *ngFor="let org of organizaton_data" value="{{org.id}}" (click)="state(org.id)">{{org.organization_name}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+
+                    <div class="col s6">
+                      <mat-form-field class="cs-input" appearance="outline">
+                        <mat-label>Select Vendor</mat-label>
+                        <mat-select name="vendor" [(ngModel)]="order_detail.vendor" [disabled]="id!=0">
+                          <mat-option *ngFor="let row of vendor_data" value="{{row.id}}" (click)="vendor_dealing_item(row.id)">{{row.company_name}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                    
+                  </div>    
+                </div>
+              </div>
+            </div>
+            
+            
+            <div class="sprate-box cs-form mt10">
+              <div class="cs-heading">
+                <h2> Add Item</h2>
+                <span class="required">Indicates required fields ( <sup>*</sup> )</span>
+              </div>
+              <mat-divider class="left-right-15 mt10"></mat-divider>
+              <div class="row mt10">
+                <div class="col s12">
+                  <div class="row">
+                    <div class="col s2">
+                      <mat-form-field class="cs-input" appearance="outline">
+                        <mat-label>Select item</mat-label>
+                        <mat-select name="raw_name" [(ngModel)]="item_detail.item_name" >
+                          <div class="search-block">
+                            <input type="text" name="search" placeholder="Search.." (input)="filter_dr(tmpsearch.search)" #search="ngModel"
+                              [(ngModel)]="tmpsearch.search">
+                          </div>
+                          <mat-option *ngFor="let item of item_list"  value="{{item.item_name}}"  (click)="temp(item);get_po_pending_item(item.raw_id)">{{item.item_name}}--{{item.brand}}({{item.unit_of_measurment}})</mat-option>
+                        </mat-select>
+                        
+                      </mat-form-field>
+                    </div>
+                    
+                    <div class="col s2" *ngIf="item_data.type =='State Wise'" >
+                      <mat-form-field class="cs-input" appearance="outline">
+                        <mat-label>Select State</mat-label>
+                        <mat-select name="state" [(ngModel)]="item_detail.state_name">
+                          <mat-option *ngFor="let state of state_list" value="{{state.state_name}}">{{state.state_name}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                    <div class="col s2">
+                      <mat-form-field class="cs-input" appearance="outline">
+                        <input matInput placeholder="Enter Price" type="number" name="price"  [(ngModel)]="item_detail.price" (ngModelChange)=" item_detail.amount = convert_int(item_detail.price) * convert_int(item_detail.qty)" required>
+                      </mat-form-field>
+                    </div>
+                    <div class="col s2" >
+                      <mat-form-field class="cs-input" appearance="outline">
+                        <input matInput placeholder="Enter Qty" type="number" name="qty" [(ngModel)]="item_detail.qty" (ngModelChange)=" item_detail.amount = convert_int(item_detail.price) * convert_int(item_detail.qty)" required>
+                      </mat-form-field>  
+                    </div>
+                    <div class="col s2" >
+                      <mat-form-field class="cs-input" appearance="outline">
+                        <input  matInput placeholder="Amount" type="text" name="amount" [(ngModel)]="item_detail.amount" required>
+                      </mat-form-field>  
+                    </div>
+                    <div class="col s2">                    
+                      <div class="cs-btn">
+                        <div class="in-btn" >
+                          <button [disabled]="!item_detail.item_name || !item_detail.qty || !item_detail.price" mat-raised-button color="accent" type="submit" (click)="calculate_amount()" >ADD TO LIST</button>
+                        </div>                        
+                      </div>  
+                    </div>
+                  </div> 
+                  
+                  <p *ngIf="pendingOrder != {} && pendingOrder.total_pending_qty && pendingOrder.total_pending_qty != 0" class="info" >An Purchase Order is already placed : {{pendingOrder.total_pending_qty}} Quantity , Tentative Delivery Date : {{pendingOrder.tentative_time | date:'dd-MMM-yyyy' }}</p>
+                 
+                </div>
+              </div>
+              
+            </div> 
+          </div>
+          
+          <div class="col s12" *ngIf="this.item_array.length">
+            <div class="cs-form mt10">
+              <div class="sprate-box cs-form">
+                <div class="cs-heading">
+                  <h2> Purchase Order List</h2>
+                  <span class="required">Indicates required fields ( <sup>*</sup> )</span>
+                </div>
+                <mat-divider class="left-right-15 mt10"></mat-divider>
+                
+                
+                <div class="cs-table left-right-10" >
+                  <div class="sticky-head">
+                    <div class="table-head border-top">
+                      <table>
+                        <tr>
+                          <th class="w50 text-center">S.No</th>
+                          <th>Item Name</th>
+                          <th class="w100 text-center">State</th>
+                          <th class="w200 text-center">Brand</th>
+                          <th class="w100 text-center">Size</th>
+                          <th class="w100 text-center">Price</th>
+                          <th class="w100 text-center">Quantity</th>
+                          <th class="w100 text-center">Amount</th>
+                          <th class="w100 text-center">lead Time</th>
+                          <th class="w100 text-center">Action</th>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                  
+                  <div class="table-container">
+                    <div class="table-content none-shadow">
+                      <table >
+                        <tr *ngFor="let data of item_array;let i=index">
+                          <td class="w50 text-center">{{i+1}}</td>
+                          <td>{{data.item_name}}</td>
+                          <td class="w100">{{data.state ? data.state : '--'}}</td>
+                          <td class="w200 text-center">{{data.brand}}</td>
+                          <td class="w100 text-center">{{data.unit_of_measurement}}</td>
+                          <td class="w100 text-center">₹ {{data.price}}</td>
+                          <td class="w100 text-center">{{data.qty}}</td>
+                          <td class="w100 text-center">₹ {{data.amount}}</td>
+                          <td class="w100 text-center">{{data.lead_time ? data.lead_time+' Days ' : ''}}</td>
+                          <td class="w100 text-center">
+                            <!-- <button mat-button class="delete-mat"> <button class="material-icons green-clr" mat-matTooltip="Edit">create<button> -->
+                              <button mat-button class="delete-mat" (click)="delete_item(i)"><i class="material-icons red-clr" >delete_sweep</i></button>
+                              
+                            </td>
+                          </tr>
+                          
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="row">         
+                    <div class="col s8"></div>               
+                    <div class="col s4">
+                      <div class="summary summary mt35 pl45">
+                        <table>
+                          <tr>
+                            <td>Total Qty</td>
+                            <td class="text-center"><strong>:</strong></td>
+                            <td class="text-right"><strong>{{total_qty}}</strong></td>
+                          </tr>
+                          <tr>
+                            <td>Total Amount</td>
+                            <td class="text-center"><strong>:</strong></td>
+                            <td class="text-right"><strong>&#x20B9; {{total_amount}}/-</strong></td>
+                          </tr>
+                          
+                        </table>
+                      </div>
+                      
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="col s12" >
+            <div class="cs-btn fixedd mt32 text-right">
+              <div class="in-btn" >
+                <button *ngIf="this.id==0" mat-raised-button color="accent" type="submit" (click)="submit()">Save</button>
+                <button *ngIf="this.id!=0" mat-raised-button color="accent" type="submit" >update</button>
+              </div>
+              
+            </div>
+          </div>
+        </div>
+        
+        
+        
+        
+        
+        
+      </form>
+    </div>
+  </div>

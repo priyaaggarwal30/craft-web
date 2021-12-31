@@ -1,0 +1,274 @@
+<div class="main-container" >
+  <div *ngIf="loader">
+    <mat-spinner class="loader">
+      <div><p>Loading....</p></div>
+    </mat-spinner>
+  </div>
+  <div class="middle-container mb0">
+    <div class="page-heading">
+      <div class="heading-text bc-space">
+        <div class="back-btn">
+          <a mat-button routerLink="/vendor-list" routerLinkActive="active"><i class="material-icons">west</i></a>
+        </div>
+        <h2>vendor Detail</h2>
+        
+      </div>
+    </div>
+    
+    <div class="left-auto">
+
+      <div class="tabs right-tab ml15">
+        <ul class="dflex1">
+          <li (click)="activeTab='Detail'">
+            <a [ngClass]="{'active':activeTab=='Detail'}" >Detail</a>
+          </li>
+          <li (click)="activeTab='purchase_order';GET_VENDOR_PO_DATA(vendor_data.id)">
+            <a [ngClass]="{'active':activeTab=='purchase_order'}">Purchase Order</a>
+          </li>
+        
+          </ul>
+        </div>
+    </div>
+    </div>
+    
+    
+    <div class="container-outer">
+      <div class="container" >
+        <div *ngIf="activeTab=='Detail'">
+          <div class="row">
+            <div class="col s12">
+              <div class="details-info">
+                <div class="basic-details">
+                  <div class="cs-heading">
+                    <h2>Basic Detail</h2>
+                  </div>
+                  <div class="profile-info">
+                    <ul class="ais">
+                      <li class="col s4">
+                        <div class="cs-box">
+                          <img src="../assets/img/people.svg" class="fix-img">
+                          <span>Company Name</span>
+                          <p class="link-clr">{{vendor_data.company_name?vendor_data.company_name:'--'}}</p>
+                          <!-- <a  class="edit-icon" color="accent" matRipple matTooltip="EDIT" (click)="openEditDialog(vendor_data.company_name,'company_name')" ><i class="material-icons">create</i></a> -->
+                        </div>
+                      </li>
+                      <li class="col s4">
+                        <div class="cs-box">
+                          <img src="../assets/img/company.svg" class="fix-img">
+                          <span>Name</span>
+                          <p >{{vendor_data.name?vendor_data.name:'--'}}</p>
+                          <!-- <a  class="edit-icon" color="accent" matRipple matTooltip="EDIT"(click)="openEditDialog(vendor_data.name,'name')"  ><i class="material-icons">create</i></a> -->
+                        </div>
+                      </li>
+                      <li class="col s4">
+                        <div class="cs-box">
+                          <img src="../assets/img/phone.svg" class="fix-img">
+                          <span>Mobile no</span>
+                          <p>{{vendor_data.mobile?vendor_data.mobile:'--'}}</p>
+                          <!-- <a  class="edit-icon" color="accent" matRipple matTooltip="EDIT" (click)="openEditDialog(vendor_data.mobile,'mobile')"  ><i class="material-icons">create</i></a> -->
+                        </div>
+                      </li>
+                      <li class="col s4">
+                        <div class="cs-box">
+                          <img src="../assets/img/gmail.svg" class="fix-img">
+                          <span>Email</span>
+                          <p>{{vendor_data.email?vendor_data.email:'--'}}</p>
+                          <!-- <a  class="edit-icon" color="accent" matRipple matTooltip="EDIT" (click)="openEditDialog(vendor_data.email,'email')" ><i class="material-icons">create</i></a> -->
+                        </div>
+                      </li>
+                      <li class="col s4">
+                        <div class="cs-box">
+                          <img src="../assets/img/tax.svg" class="fix-img">
+                          <span>GST</span>
+                          <p>{{vendor_data.gst?vendor_data.gst:'--'}}</p>
+                          <!-- <a  class="edit-icon" color="accent" matRipple matTooltip="EDIT" (click)="openEditDialog(vendor_data.email,'email')" ><i class="material-icons">create</i></a> -->
+                        </div>
+                      </li>
+                      
+                    </ul>
+                    
+                  </div>
+                  
+                  <div class="col s6 cs-figure">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row">
+            <form >
+              <div class="col s12">
+                <div class="details-info">
+                  <div class="basic-details">
+                    <div class="cs-heading">
+                      <h2>Address </h2>
+                      <!-- <a  class="edit-item" matTooltip="EDIT" color="accent" (click)="editaddress()"><i class="material-icons">edit</i></a> -->
+                    </div>
+                    <div class="cs-figure">
+                      <ul class="minus-top">
+                        <li>
+                          <div class="outer">
+                            <div class="inner">
+                              <span>State</span>
+                              <p>{{vendor_data.state}}</p>
+                              
+                            </div>
+                          </div>
+                        </li>
+                        <li>
+                          <div class="outer">
+                            <div class="inner">
+                              <span>District</span>
+                              <p>{{vendor_data.district}}</p>
+                              
+                            </div>
+                          </div>
+                        </li>
+                        <li>
+                          <div class="outer">
+                            <div class="inner">
+                              <span>City</span>
+                              <p>{{vendor_data.city}}</p>
+                              
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                      <ul class="minus-top">                                            
+                        
+                        <li >
+                          <div class="outer">
+                            <div class="inner">
+                              <span>Pin Code</span>
+                              <p>{{vendor_data.pincode}}</p>
+                            </div>
+                          </div>
+                        </li>
+                        
+                        <li>
+                          <div class="outer">
+                            <div class="inner">
+                              <span>address</span>
+                              <p>{{vendor_data.address}}</p>
+                            </div>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </form>
+            
+          </div>
+          
+          <div class="row">
+            <div class="col s12">
+              
+              <div class="details-info mt15">
+                <div class="basic-details">
+                  <div class="cs-heading mb0">
+                    <h2>Dealing Item</h2>
+                  </div>
+                  <div class="cs-logs">
+                    
+                    <div class="cs-table left-right-10">
+                      <div class="table-head ">
+                        <table class="sno-border">
+                          <tr>
+                            <th class="w50">S.No</th>
+                            <th>Item Name</th>
+                            <th class="w100">Type</th>
+                            <th class="w300">Brand</th>
+                            <th class="w200">Size</th>
+                          </tr>
+                        </table>
+                      </div>
+                      
+                      <div class="table-container">
+                        <div class="table-content">
+                          <table class="sno-border">
+                            <tr *ngFor="let list of vendor_data['item_assigned']; let i = index">
+                              <td class="w50">{{i+1}}</td>
+                              <td >{{list.item_name}}</td>
+                              <td class="w100" >{{list.type}}</td>
+                              <td class="w300">{{list.brand}}</td>
+                              <td class="w200">{{list.unit_of_measurment?list.unit_of_measurment:'--'}}</td>
+                              
+                              
+                            </tr>
+                            
+                          </table>
+                        </div>
+                      </div>
+                      
+                    </div>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      <div *ngIf="activeTab=='purchase_order'">
+        <div class="row" >
+          <div class="cs-table left-right-10">
+            <div class="sticky-head">
+              <div class="table-head border-left border-right">
+                <table>
+                  <tr>
+                    <th class="w50">S.No</th>
+                    <th class="w100">Date Created</th>
+                    <th class="w100 text-center">Unit</th>
+                    <th class="w90">Created By</th>
+                    <th class="w90">Order Id</th>
+                    <th class="w100 text-center">Total Order Item</th>
+                    <th class="w100 text-center">Total Item Qty</th>
+                    <th class="w100 text-center">Received Qty</th>
+                    <th class="w100 text-center">Pending Qty</th>
+                    <th class="w80 text-center">Status</th>
+                  </tr>
+                </table>
+              </div>
+            </div>
+      
+            <div class="table-container">
+              <div class="table-content">
+                <table>
+                  <tr *ngFor="let list of item_data;let i=index">
+                    <td class="w50">{{i+1}}</td>
+                    <td class="w100">{{list.date_created|date:'dd-MM-yyyy'}}</td>
+                    <td class="w100 text-center">{{list.organization_name}}</td>
+                    <td class="w90">{{list.createdByName}}</td>
+                    <td class="w90"><a class="link-btn" routerLink="/purchase-order-detail/{{list.id}}" routerLinkActive="active"
+                        mat-button>{{list.purchase_order_id}}</a></td>
+                    <td class="w100 text-center">{{list.order_item}}</td>
+                    <td class="w100 text-center">{{list.order_item_qty}}</td>
+                    <td class="w100 text-center">{{list.recived_qty}}</td>
+                    <td class="w100 text-center">{{list.pending_qty}}</td>
+                    <td class="w80 text-center">{{list.order_status}}</td>
+                   
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+      
+        </div>
+      </div>
+        
+      </div>
+      
+    </div>
+    
+    
+    
+    
+    
+  </div>
+  
+  
+  
+  

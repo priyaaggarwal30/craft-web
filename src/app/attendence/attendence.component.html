@@ -1,0 +1,496 @@
+<div class="main-container">
+    <div class="middle-container mb0">
+        <div class="page-heading">
+            <div class="heading-text">
+                <h2>Attendance</h2>
+            </div>
+            <div class="uppr-one m-right-data" *ngIf="show_today">
+                
+                <div class="informationDots ml15" >
+                    
+                    <ul>
+                        <li>
+                            Present <span>{{data.present}}</span>
+                        </li>
+                        <li>
+                            Absent <span>{{data.absent}}</span>
+                        </li>
+                    </ul>
+                </div>
+                
+            </div>
+        </div>
+        
+        <div class="left-auto">
+            <div class="uppr-one m-right-data">
+                <ul>
+                    <li class="mr10">
+                        <a class="refresh-btn" mat-raised-button (click)="refresh() "  matTooltip="Refresh" ><i class="material-icons"> refresh</i></a>
+                    </li>
+                </ul>
+                
+                
+                
+                <div *ngIf="!show_today">
+                    <div class="cs-form date-filter">
+                        <mat-form-field appearance="outline" class="cs-input w150">
+                            <mat-label>Date From</mat-label>
+                            <input matInput [matDatepicker]="date_from" placeholder="From Date" [max]="today_date" [(ngModel)]="data.date_from" readonly>
+                            <mat-datepicker-toggle matSuffix [for]="date_from"></mat-datepicker-toggle>
+                            <mat-datepicker #date_from></mat-datepicker>
+                        </mat-form-field>
+                        
+                        <div class="df">
+                            <mat-form-field appearance="outline" class="cs-input w150">
+                                <mat-label>Date To</mat-label>
+                                <input matInput [matDatepicker]="date_to" placeholder="To Date" [min]="data.date_from" [max]="today_date"
+                                [(ngModel)]="data.date_to" readonly>
+                                <mat-datepicker-toggle matSuffix [for]="date_to"></mat-datepicker-toggle>
+                                <mat-datepicker #date_to></mat-datepicker>
+                            </mat-form-field>
+                            <a class="add-item ml10" mat-raised-button [disabled]="!data.date_from || !data.date_to"
+                            (click)="(data.date_from || data.date_to) ? attendance_list('getAttendance','2') : ''">Go</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="tabs ml15">
+                    <ul>
+                        <li>
+                            <a class="" [ngClass]="show_today ? 'active' : ''" (click)="change_tab('getattendance_today',1)">Today
+                                <span ></span>
+                            </a>
+                        </li>
+                        <li>
+                            <a class="" [ngClass]="!show_today ? 'active' : ''" (click)="change_tab('getAttendance',2)">All 
+                                <span ></span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="top-pagination" *ngIf="!show_today">
+                <ul>
+                    <li>
+                        <p>Pages {{pagenumber}} Of {{total_page}}</p>
+                    </li>
+                    <li *ngIf="pagenumber > 1">
+                        <button mat-button class="left-btn" (click)="start=start-page_limit; attendance_list('getAttendance',2)" [disabled]="pagenumber == 1">
+                            <i class="material-icons">keyboard_arrow_left</i>
+                        </button>
+                    </li>
+                    <li>
+                        <input type="text" placeholder="GO TO" name="pagenumber" (keyup.enter)="start=(pagenumber*page_limit)-page_limit; attendance_list('getAttendance',2)" [(ngModel)]="pagenumber"  min="1" max={{total_page}}>
+                    </li>
+                    
+                    <li *ngIf="pagenumber <= total_page">
+                        <button mat-button class="right-btn"  (click)="start=start+page_limit; attendance_list('getAttendance',2)" [disabled]="pagenumber == total_page">
+                            <i class="material-icons">keyboard_arrow_right</i>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+    </div>
+    <div class="container-outer padding0">
+        
+        <!-- <div *ngIf="loader">
+            <mat-spinner class="loader">
+                <div><p>Loading....</p></div>
+            </mat-spinner>
+        </div> -->
+        <div class="container mb60">
+            <div class="cs-table horizontal-scroll">
+                <div class="sticky-head">
+                    <div class="table-head">
+                        <table>
+                            <tr>
+                                <th class="w50 text-center">Sr.No</th>
+                                <th class="w90 text-center" *ngIf="!show_today">Date</th>
+                                <th class="w150 text-center">User </th>
+                                <th class="w120 text-center">Designation</th>
+                                <!-- <th class="w100 text-center">Market Area</th> -->
+                                <th class="w100 text-center">Work Type</th>
+                                <th class="w100 text-center">Vehicle</th>
+                                <th class="w90 text-center">Start Time</th>
+                                <th class="w150 text-center">Start Location</th>
+                                <th class="w90 text-center">Start Reading</th>
+                                <th class="w90 text-center">Stop Time</th>
+                                <th class="w150 text-center">Stop Location</th>
+                                <th class="w130 text-center">Stop Reading</th>
+                                <th class="w90 text-center">Reset </th>
+                                <th class="w90 text-center">CheckIn Count</th>
+                                <!-- <th class="w90 text-center">Primary Order</th>
+                                    <th class="w90 text-center">Secondary Order</th> -->
+                                    <th class="w90 text-center">Travel</th>
+                                    <th class="w90 text-center">Google KM</th>
+                                    <th class="w90 text-center">Expense</th>
+                                    <!-- <th class="w90 text-center">Contractor Meet</th> -->
+                                    <!-- <th class="w100 text-center">Reading Image</th> -->
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="table-head bdrt">
+                            <table>
+                                <tr>
+                                    <th class="w50"></th>
+                                    <th class="w90" *ngIf="!show_today">
+                                    </th>
+                                    <th class="w150">
+                                        <div class="th-search-acmt">
+                                            <mat-form-field class="example-full-width cs-input select-input">
+                                                <input matInput placeholder="Enter Name...."
+                                                (keyup.enter)="show_today? attendance_list('getattendance_today',1) : attendance_list('getAttendance',2)"
+                                                [(ngModel)]="data.name">
+                                            </mat-form-field>
+                                        </div>
+                                    </th>
+                                    <th class="w120" *ngIf="show_today">
+                                        <div class="th-search-acmt" >
+                                            <mat-form-field class="example-full-width cs-input select-input">
+                                                <input matInput placeholder="Enter Designation...."
+                                                [(ngModel)]="data.designation" (keyup.enter)="show_today? attendance_list('getattendance_today',1) : attendance_list('getAttendance',2)"> 
+                                            </mat-form-field>
+                                        </div>
+                                    </th>
+                                    <!-- <th class="w100">&nbsp;</th> -->
+                                    <th class="w120" *ngIf="!show_today">
+                                        <div class="th-search-acmt" >
+                                            <mat-form-field class="example-full-width cs-input select-input">
+                                                <input matInput placeholder="Enter Designation...."
+                                                [(ngModel)]="data.designation" (keyup.enter)="show_today? attendance_list('getattendance_today',1) : attendance_list('getAttendance',2)"> 
+                                            </mat-form-field>
+                                        </div>
+                                    </th>
+                                    
+                                    <th class="w100">&nbsp;</th>
+                                    <th class="w100">&nbsp;</th>
+                                    <th class="w90">&nbsp;</th>
+                                    <th class="w150">&nbsp;</th>
+                                    <th class="w90">&nbsp;</th>
+                                    <th class="w90">&nbsp;</th>
+                                    <th class="w150">&nbsp;</th>
+                                    <th class="w130">&nbsp;</th>
+                                    <th class="w90">&nbsp;</th>
+                                    <th class="w90">&nbsp;</th>
+                                    <th class="w90">&nbsp;</th>
+                                    <!-- <th class="w90">&nbsp;</th>
+                                        <th class="w90">&nbsp;</th>
+                                        <th class="w90">&nbsp;</th> -->
+                                        <th class="w90">&nbsp;</th>
+                                        <th class="w90">&nbsp;</th>
+                                        <!-- <th class="w100">&nbsp;</th> -->
+                                        
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="table-container">
+                            <div class="table-content">
+                                <table>
+                                    <tr *ngFor="let p of attendancelist;let i=index">
+                                        <td class="w50">{{i+1}}</td>
+                                        <td *ngIf="!show_today" class="w90 text-center">{{(p.date_created?p.date_created :'--') | date : 'd MMM y' }}</td>
+                                        
+                                        <td class="w150 text-center" [ngClass]="p.attend_date ? 'light-green' : ( (p.weekly_off && p.weekly_off == p.date_created_day) ? 'yellow-bgclr' : 'red-bgclr') ">{{p.name}}</td>
+                                        <td  class="w120 text-center">{{p.designation_name ? p.designation_name :'--'}}</td>
+                                        <!-- <td class="w100 text-center">{{p.market_area ? p.market_area : '--' }}</td> -->
+                                        
+                                        
+                                        <td *ngIf="!p.work_type" class="w100 text-center">--</td>
+                                        
+                                        <td *ngIf="p.work_type=='Working'" class="w100 text-center">{{p.work_type ? p.work_type : '--'}}</td>
+                                        
+                                        <td *ngIf="p.work_type=='Travel'" class="w100 text-center"
+                                        matTooltip="{{p.travel_place ? p.travel_place : '--'}}" matTooltipPosition="above">{{p.work_type ?
+                                            p.work_type : '--'}}</td>
+                                            <td class="w100 text-center">{{p.vehicle?p.vehicle:'--'}}</td>
+                                            
+                                            <td class="w90 text-center">{{p.start_time?p.start_time:'--'}}</td>
+                                            
+                                            <td class="w150 text-center" matTooltip="{{p.start_address && p.start_address!=''?p.start_address:'--'}}"
+                                            matTooltipPosition="above">
+                                            <div class="one-line">{{p.start_address && p.start_address!=''?p.start_address:'--'}}</div>
+                                        </td>
+                                        
+                                        <!-- <td class="w150 text-center" *ngIf="p.start_address==''">N A</td> -->
+                                        
+                                        <td class="w90 text-center" style="cursor: pointer;" (click)="imageModel(p.start_meter_image)">{{p.start_reading?p.start_reading:'--'}}</td>
+                                        
+                                        
+                                        
+                                        <!-- <td class="w200 text-center" matTooltip="{{p.travel_place ? p.travel_place : '--'}}"
+                                            matTooltipPosition="above">
+                                            <div class="one-line">{{p.travel_place ? p.travel_place : '--'}}</div>
+                                        </td> -->
+                                        <td class="w90 text-center" > {{p.stop_time?p.stop_time:'--'}}</td>
+                                        
+                                        <!-- <td class="w90 text-center" *ngIf="p.stop_time=='00:00:00'">N A</td> -->
+                                        
+                                        <td class="w150 text-center" matTooltip="{{p.stop_address && p.stop_address != ''?p.stop_address:'--'}}"
+                                        matTooltipPosition="above">
+                                        <div class="one-line">{{p.stop_address && p.stop_address != ''?p.stop_address:'--'}}</div>
+                                        <!-- <div class="action-btns" *ngIf="p.stop_address!='Not found' && show_today">
+                                            <a mat-button class="view" (click)="reset_attendance(p.id)"><i class="material-icons">restore</i>
+                                                Reset</a>
+                                            </div> -->
+                                        </td>
+                                        
+                                        <!-- <td class="w150 text-center" *ngIf="p.stop_address==''">N A</td> -->
+                                        
+                                        <td *ngIf="((p.work_type=='Working') && (p.stop_reading=='') && (p.date_created!=newToday_date) && !(show_today))" class="w130 text-center">
+                                            <div class="df jc">
+                                                <div  *ngIf=" flag==p.id">
+                                                    <input class="border0 w80 font12 padding5 radius2" style="background: #ececec;" placeholder="Enter Stop Reading" type="text" value = "0" name="stop_reading" #stop_reading="ngModel" [(ngModel)]="data.stop_reading">
+                                                </div>
+                                                <button *ngIf="!(show==true && flag==p.id)" mat-button class="delete-mat" matTooltip="Edit" (click)="show=true; flag=p.id;   data.stop_reading=''" matTooltipPosition="above">
+                                                    <i class="material-icons green-clr">create</i>
+                                                </button>
+                                                <!-- <button mat-button class="delete-mat" matTooltip="Edit" matTooltipPosition="above" (click)="statusModal(detail)"><i class="material-icons green-clr">create</i></button>  -->
+                                                <button class="pr0" style="line-height: 10px;" *ngIf="show && flag==p.id" mat-button class="delete-mat"  (click)="(conInt2(data.stop_reading) > conInt2(p.start_reading) )?updateReading(data.stop_reading ,p.id):enable_error()">
+                                                    <i class="material-icons green-clr" mat-button matTooltip="Save">save</i>
+                                                </button>
+                                            </div>
+                                        </td>  
+                                        
+                                        
+                                        
+                                        <!-- <button class="pr0" style="line-height: 10px;" *ngIf="show && flag==p.id" mat-button class="delete-mat"  (click)="(data.stop_reading)?updateReading(data.stop_reading ,p.id):''"> -->
+                                            <!-- <td *ngIf="((p.stop_reading=='') && (p.date_created!=newToday_date) && !(show_today))" class="w90 text-center">
+                                                <div class="td-input" [ngClass]="{'active':list.}" >
+                                                    <input type="number" class="input-bdr" value=""  name="stop_reading" #stop_reading="ngModel" [(ngModel)]="data.stop_reading" (ngModelChange)="calc(list.id,list.qty)" [readonly]="!list.editqty">
+                                                    <div class="edit">
+                                                        <a class="edit-icon edit" >
+                                                            <i class="material-icons" (click)="show=true; flag=p.id;  enableInput= true; data.stop_reading=''">create</i>
+                                                        </a>
+                                                        <a class="edit-icon save">
+                                                            <i class="material-icons" (click)="(data.stop_reading)?updateReading(data.stop_reading ,p.id):''">save</i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </td> -->
+                                            <td class="w130 text-center" *ngIf="show_today && p.work_type=='Working'" (click)="imageModel(p.stop_meter_image)"  >
+                                                {{p.stop_reading?p.stop_reading:'--'}}
+                                            </td>
+                                            
+                                            <td class="w130 text-center" *ngIf="!p.work_type || p.work_type=='Travel'" >
+                                                --
+                                            </td>
+                                            
+                                            <td class="w130 text-center"  *ngIf="!(show_today) && (p.date_created==newToday_date) && p.work_type=='Working'">
+                                                {{p.stop_reading && p.stop_reading!=''?p.stop_reading:'--'}}
+                                            </td>
+                                            
+                                            <td class="w130 text-center"  *ngIf="!(show_today) && (p.stop_reading!='') && (p.date_created!=newToday_date)&& p.work_type=='Working'">
+                                                {{p.stop_reading?p.stop_reading:'--'}}
+                                            </td>
+                                            
+                                            <td class="w90 text-center">
+                                                <button mat-button class="delete-mat" *ngIf="show_today && p.stop_time && p.stop_time != '--'" (click)="reset_attendence(p.id)">
+                                                    <i class="material-icons green-clr" mat-button matTooltip="Re-assign">autorenew</i>
+                                                </button>
+                                            </td>
+                                            
+                                            
+                                            <!-- <td class="w90 text-center">{{p.km_per_day ? p.km_per_day : '--'}}</td> -->
+                                            <td class="w90 text-center" *ngIf="p.check_in_count">
+                                                <span style="cursor: pointer;color:blue" (click)="goTo(p.name,p.date_created,'checkin')">
+                                                    {{p.check_in_count }}
+                                                </span>
+                                            </td>
+                                            <td class="w90 text-center"*ngIf="!(p.check_in_count)">
+                                                --
+                                                
+                                            </td>
+                                            <!-- <td class="w90 text-center">
+                                                <span style="cursor: pointer;color:blue" (click)="p.today_primary_sales && p.today_primary_sales_count ? goTo(p.name,p.date_created,'primary_sale'):''">
+                                                    {{p.today_primary_sales_count?p.today_primary_sales_count:'0'}} | &#8377; {{p.today_primary_sales?p.today_primary_sales:'00'}}
+                                                </span>
+                                            </td>
+                                            
+                                            <td class="w90 text-center">
+                                                <span style="cursor: pointer;color:blue" (click)="p.today_secondary_sales && p.today_secondary_sales_count ? goTo(p.name,p.date_created,'secondary_sale'):'--'">
+                                                    {{p.today_secondary_sales_count?p.today_secondary_sales_count:'0'}} | &#8377;{{p.today_secondary_sales? conInt(p.today_secondary_sales):'00'}}
+                                                </span>
+                                            </td> -->
+                                            
+                                            <td class="w90 text-center">{{p.km_per_day ? p.km_per_day + ' '+'Km': '--'}} </td>
+                                            
+                                            <td class="w90 text-center"> 
+                                                <div class="one-line" style="cursor: pointer;color:blue" (click)="attendancemodal(p)">{{p.google_map_km_per_day && p.google_map_km_per_day!='' ? p.google_map_km_per_day + ' Km': '--'}}</div>
+                                                
+                                            </td>
+                                            
+                                            
+                                            <td class="w90 text-center" *ngIf="p.expense_amount">
+                                                <span style="cursor: pointer;color:blue" (click)="goTo(p.name,p.date_created,'Expense')">
+                                                    &#8377; {{p.expense_amount}}
+                                                </span>
+                                            </td>
+                                            
+                                            <td class="w90 text-center"*ngIf="!(p.expense_amount)">
+                                                --
+                                                
+                                            </td>
+                                            <!-- <a class="link-btn" mat-button routerLink="/order-detail/{{list.id}}" routerLinkActive="active"> -->
+                                                <!-- <td class="w90 text-center">
+                                                    <span style="cursor: pointer;color:blue" (click)="goTo(p.name,p.date_created,'contractor_meet')">
+                                                        {{p.Meet_count?p.Meet_count:'--'}}
+                                                    </span>  
+                                                </td> -->
+                                                
+                                                <!-- <td class="w100 text-center">
+                                                    <div class="dflex1">
+                                                        <a class="img-avtar relative after-border mr10">
+                                                            <img  *ngIf="p.start_meter_image!=null &&p.start_meter_image!=''" src="{{p.start_meter_image}}"    (click)="imageModel(p.start_meter_image)" >
+                                                            <img  *ngIf="p.start_meter_image==null ||p.start_meter_image==''" src="assets/img/no_found.svg"    >
+                                                            
+                                                        </a>
+                                                        <a class="img-avtar relative mr10">
+                                                            <img *ngIf="p.stop_meter_image!=null &&p.stop_meter_image!=''" src="{{p.stop_meter_image}}"(click)="imageModel(p.stop_meter_image)">
+                                                            <img  *ngIf="p.stop_meter_image==null  ||p.stop_meter_image==''" src="assets/img/no_found.svg"    >
+                                                            
+                                                        </a>
+                                                        
+                                                    </div>
+                                                </td> -->
+                                                
+                                            </tr>
+                                            <ng-container *ngFor="let lead of skelton">
+                                                <tr class="sk-loading" *ngIf="loader">
+                                                    <td class="w90">
+                                                        <div>&nbsp;</div>
+                                                    </td>
+                                                    <td class="w150">
+                                                        <div>&nbsp;</div>
+                                                    </td>
+                                                    <td class="w100">
+                                                        <div>&nbsp;</div>
+                                                    </td>
+                                                    <td class="w90">
+                                                        <div>&nbsp;</div>
+                                                    </td>
+                                                    <td class="w150">
+                                                        <div>&nbsp;</div>
+                                                    </td>
+                                                    <td class="w90">
+                                                        <div>&nbsp;</div>
+                                                    </td>
+                                                    <td class="w90">
+                                                        <div>&nbsp;</div>
+                                                    </td>
+                                                    <td class="w150">
+                                                        <div>&nbsp;</div>
+                                                    </td>
+                                                    <td class="w130">
+                                                        <div>&nbsp;</div>
+                                                    </td>
+                                                    <td class="w90">
+                                                        <div>&nbsp;</div>
+                                                    </td>
+                                                    <td class="w90">
+                                                        <div>&nbsp;</div>
+                                                    </td>
+                                                    <td class="w90">
+                                                        <div>&nbsp;</div>
+                                                    </td>
+                                                    <td class="w90">
+                                                        <div>&nbsp;</div>
+                                                    </td>
+                                                    <!-- <td class="w90">
+                                                        <div>&nbsp;</div>
+                                                    </td>
+                                                    <td class="w90">
+                                                        <div>&nbsp;</div>
+                                                    </td>
+                                                    <td class="w90">
+                                                        <div>&nbsp;</div>
+                                                    </td> -->
+                                                    <td class="w90">
+                                                        <div>&nbsp;</div>
+                                                    </td>
+                                                    <!-- <td class="w100">
+                                                        <div>&nbsp;</div>
+                                                    </td> -->
+                                                    
+                                                </tr>
+                                            </ng-container>
+                                            <!-- <ng-container *ngFor="let lead of skelton">
+                                                <tr class="sk-loading" *ngIf="loader">
+                                                    <td *ngIf="!show_today" class="w90">
+                                                        <div>&nbsp;</div>
+                                                    </td>
+                                                    <td class="w150">
+                                                        <div>&nbsp;</div>
+                                                    </td>
+                                                    <td class="w100">
+                                                        <div>&nbsp;</div>
+                                                    </td>
+                                                    <td class="w90">
+                                                        <div>&nbsp;</div>
+                                                    </td>
+                                                    <td class="w150">
+                                                        <div>&nbsp;</div>
+                                                    </td>
+                                                    <td class="w90">
+                                                        <div>&nbsp;</div>
+                                                    </td>
+                                                    <td class="w90">
+                                                        <div>&nbsp;</div>
+                                                    </td>
+                                                    <td class="w150">
+                                                        <div>&nbsp;</div>
+                                                    </td>
+                                                    <td class="w90">
+                                                        <div>&nbsp;</div>
+                                                    </td>
+                                                    <td class="w100">
+                                                        <div>&nbsp;</div>
+                                                    </td>
+                                                    <td class="w90">
+                                                        <div>&nbsp;</div>
+                                                    </td>
+                                                    <td class="w90">
+                                                        <div>&nbsp;</div>
+                                                    </td>
+                                                    <td class="w90">
+                                                        <div>&nbsp;</div>
+                                                    </td>
+                                                    <td class="w90">
+                                                        <div>&nbsp;</div>
+                                                    </td>
+                                                    <td class="w90">
+                                                        <div>&nbsp;</div>
+                                                    </td>
+                                                    <td class="w90">
+                                                        <div>&nbsp;</div>
+                                                    </td>
+                                                    <td class="w90">
+                                                        <div>&nbsp;</div>
+                                                    </td>
+                                                </tr>
+                                            </ng-container>  -->
+                                        </table>
+                                        
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="no-data" *ngIf="data_not_found==true">
+                                <img src="assets/img/no-data.gif" alt="">
+                                <p>Data not <span>available !</span></p>
+                            </div>
+                            
+                        </div>
+                        
+                        
+                        <div class="fix-btn">
+                            <a class="bottom-btn ecxel-btn" matTooltip="Download Excel" matTooltipPosition="above" mat-raised-button
+                            (click)="exportAsXLSX()"><img src="assets/img/excel.svg"></a>
+                        </div>
+                    </div>
+                    <div>
+                    </div>
+                </div>

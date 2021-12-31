@@ -1,0 +1,53 @@
+<div class="cs-modal" *ngIf="data.type!='receiving_image'&&data.type!='product_image'">
+  <div class="heading">
+      <button mat-button color="warn" class="close-btn" [mat-dialog-close]="false"><i class="material-icons">clear</i></button>
+  </div>
+  <div mat-dialog-content>
+      <div class="fancy-box">
+          <div class="form-area">
+              <img src="{{data.start_meter_image}}">
+              <img src="{{data.stop_meter_image}}">
+              <img src="{{data.image}}">
+              <img src="{{data.visiting_card_image}}">
+              <!-- <img src="assets/img/no_found.svg"> -->
+          </div>
+      </div>
+  </div>
+ 
+</div>
+<div class="cs-modal" *ngIf="data.type=='receiving_image'">
+    <div class="heading">
+        <button mat-button color="warn" class="close-btn" [mat-dialog-close]="false"><i class="material-icons">clear</i></button>
+    </div>
+    <div mat-dialog-content>
+        <div class="fancy-box">
+            <div class="form-area">
+                <img src="http://phpstack-83335-2231038.cloudwaysapps.com/api/uploads/invoice/{{data.image}}">
+                <!-- <img src="assets/img/no_found.svg"> -->
+            </div>
+        </div>
+    </div>
+   
+  </div>
+  <div class="cs-modal" *ngIf="data.type=='product_image'">
+    <div class="heading">
+        <button mat-button color="warn" class="close-btn" [mat-dialog-close]="false"><i class="material-icons">clear</i></button>
+    </div>
+    <div mat-dialog-content>
+        <div class="fancy-box">
+            <div class="form-area">
+                <img src="http://phpstack-83335-2231038.cloudwaysapps.com/api/uploads/Products/{{data.image}}">
+                <!-- <img src="assets/img/no_found.svg"> -->
+            </div>
+        </div>
+    </div>
+   
+  </div>
+
+
+<!-- <div class="cs-modal">
+    <p class="heading flat-heading">
+        <button mat-button class="close-btn" [mat-dialog-close]="false"><i class="material-icons">clear</i></button>
+    </p>
+   
+  </div> -->

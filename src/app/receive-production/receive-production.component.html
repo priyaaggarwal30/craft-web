@@ -1,0 +1,82 @@
+<div class="edit-modal">
+  
+  <div mat-dialog-content>
+    <p class="heading">Received Product</p>
+    <div class="cs-form">
+      
+      <div class="row mt10">
+        <div class="col s4">
+          <mat-form-field class="cs-input" appearance="outline">
+            <mat-label>Unit</mat-label>
+            <mat-select name="organization" [(ngModel)]="data.org_id" #organization="ngModel"
+            [ngClass]="{'has-error':organization.invalid}" required>
+            <mat-option *ngFor="let org of organizaton_data" value="{{org.id}}"
+            (click)="state_list();data.organization_name=org.organization_name">{{org.organization_name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="col s4">
+      <mat-form-field class="cs-input" appearance="outline">
+        <mat-label>Select State</mat-label>
+        <mat-select name="state" [(ngModel)]="data.state" #state="ngModel" [ngClass]="{'has-error':state.invalid}"
+        required>
+        <mat-option *ngFor="let state of state_data" value="{{state.state_name}}" (click)="GET_UNDER_PRODUCTION_PRODUCT()">
+          {{state.state_name}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    
+  </div>
+  
+  <div class="cs-table" *ngIf="under_production_product.length">
+    <div class="sticky-head">
+      <div class="table-head">
+        <table class="sno-border">
+          <tr>
+            <th class="w40 text-center"></th>
+            <th>Brand</th>
+            <th class="w150">Category</th>
+            <th class="w80">Size</th>
+            <th class="w80"> Total</th>
+            <th class="w120"> Receved</th>
+            
+          </tr>
+        </table>
+      </div>
+      
+    </div>
+    
+    <div class="table-container">
+      <div class="table-content">
+        <table class="sno-border">
+          <tr *ngFor="let row of under_production_product;let i=index">
+            <td class="w40 text-center">{{i+1}}</td>
+            <td>{{row.brand}}</td>
+            <td class="w150">{{row.category}}</td>
+            <td class="w80">{{row.size}}</td>
+            <td class="w80">{{row.under_processing_stock}}</td>
+            <td class="w120">
+                <mat-form-field class="cs-input" appearance="outline" >
+                  <mat-label>Receive Qty</mat-label>
+                  <input matInput placeholder="Receve_qty" [readonly] ="row.under_processing_stock==0" name="received_qty{{i}}" #received_qty="ngModel" [(ngModel)]="row.received_qty" (keyup)="MobileNumber($event);checkValidQty(i)">
+                </mat-form-field>
+            </td>
+          </tr>
+          
+        </table>
+      </div>
+    </div>
+    
+  </div>
+  
+  
+</div>
+</div>
+
+<div mat-dialog-actions>
+  <button mat-button color="warn" [mat-dialog-close]="false">Cancel</button>
+  <div>
+    <button mat-button color="accent" [mat-dialog-close]="false" (click)="SEND_DATA_FRO_RECEIVING()">Save</button>
+  </div>
+</div>

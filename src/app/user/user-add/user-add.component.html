@@ -1,0 +1,469 @@
+<div class="main-container">
+  <div class="middle-container">
+    <div class="page-heading">
+      <div class="heading-text">
+        <h2>User</h2>
+        <p>Add New User</p>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container-outer">
+    <div class="container tab-container">
+      <div class="row">
+        <form name="detail" #f="ngForm" (ngSubmit)=" f.valid && submitDetail()">
+          <div class="sprate-box cs-form">
+            <div class="cs-heading">
+              <h2>Add User</h2>
+              <span class="required">Indicates required fields ( <sup>*</sup> )</span>
+            </div>
+            <mat-divider class="left-right-15 mt10"></mat-divider>
+            <div *ngIf="usertype">
+              <!-- <div class="row">
+                <div class="col s12 pr0 pl0">
+                  <div class="select-one">
+                    <p>Select user type.</p>
+                    <mat-radio-group aria-placeholder="User Type" name="user_type" (ngModelChange)="userType(user_type)"ngModel #user_type="ngModel" [ngClass]="{'has-error' : user_type.invalid } " required=true>
+                      <mat-radio-button class="example-margin" color="accent" value="MARKET">Market</mat-radio-button>
+                      <mat-radio-button class="example-margin" color="accent" value="OFFICE">Office</mat-radio-button>
+                      <div class="alert alert-danger" *ngIf="!user_type.valid && f.submitted">
+                        Please select user type...
+                      </div>
+                    </mat-radio-group>
+                  </div>
+                </div>
+              </div> -->
+            </div>
+            
+            <div class="sprate-box main-bdr mt15">
+              <div class="cs-heading border-bottom">
+                <h2>USER TYPE</h2>
+              </div>
+              <div class="select-one">
+                <mat-radio-group class="example-section" id="user_type" name="user_type" [(ngModel)]="data.user_type">
+                  <mat-radio-button class="example-margin pr50" color="accent"
+                  (click)="data.user_role='3'" value="Sales User">Sales User
+                </mat-radio-button>
+                <mat-radio-button class="example-margin" color="accent" (click)="data.user_role='2'"
+                value="System User">System User
+              </mat-radio-button>
+            </mat-radio-group>
+          </div>
+          
+          <!-- <mat-divider *ngIf="data.user_type=='Sales User'"></mat-divider> -->
+          <!-- <div *ngIf="data.user_type=='Sales User'" class="select-one padding15">
+            <div class="col s5">
+              <mat-form-field class="cs-input" appearance="outline">
+                <mat-label>Select Sales User Designation</mat-label>
+                <mat-select name="type" #type="ngModel" [(ngModel)]="data.user_role"
+                [ngClass]="{'has-error' : type.invalid } " required>
+                <mat-option disabled="">Select Sales User</mat-option>
+                <mat-option value="Sales Executive">Sales Executive</mat-option>
+                <mat-option value="Sr. Manager">Sr. Manager</mat-option>
+                <mat-option value="Manager">Manager</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div class="alert alert-danger" *ngIf="!type.valid && f.submitted">
+              Sales User is required...
+            </div>
+          </div>
+        </div>
+        
+        <mat-divider *ngIf="data.user_type=='System User'"></mat-divider>
+        <div *ngIf="data.user_type=='System User'" class="select-one padding15">
+          <div class="col s5">
+            <mat-form-field class="cs-input" appearance="outline">
+              <mat-label>Select Sales User Designation</mat-label>
+              <mat-select name="type" #type="ngModel" [(ngModel)]="data.user_role"
+              [ngClass]="{'has-error' : type.invalid } " required>
+              <mat-option value="Sub-Admin">Sub-Admin</mat-option>
+            </mat-select>
+          </mat-form-field>
+          <div class="alert alert-danger" *ngIf="!type.valid && f.submitted">
+            Sales User is required...
+          </div>
+        </div>
+      </div> -->
+      
+    </div>
+    
+    <!-- <div class="row mt10">
+      <div class="col s6">
+        <mat-form-field appearance="outline" class="cs-input">
+          <mat-label>Select Sales User Designation</mat-label>
+          <mat-select name="userrole" placeholder="Sales User Designation" [(ngModel)]="data.userrole"
+          #userrole="ngModel" [ngClass]="{'has-error' : userrole.invalid } " required=true>
+          <mat-option value="" disabled>Select Sales User Designation</mat-option>
+          <mat-option *ngFor="let rsm of sales_type" value="{{rsm.id}}" (click)="assign_users(rsm.id)">
+            {{rsm.role_name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <div class="alert alert-danger" *ngIf="!userrole.valid && f.submitted">
+          Sales user Designation is required...
+        </div>
+      </div>
+      
+      <div class="col s4">
+        <mat-form-field class="cs-input" appearance="outline">
+          <mat-label>Employee code</mat-label>
+          <input matInput placeholder="Employee code" type="text" name="employee_id" #employee_id="ngModel"
+          [(ngModel)]="data.employee_id" [ngClass]="{'has-error' : employee_id.invalid } ">
+          <div class="alert alert-danger" *ngIf="!employee_id.valid && f.submitted">
+            Employee code is required...
+          </div>
+        </mat-form-field>
+      </div>
+    </div> -->
+    
+    <!-- <div  class="row mb20">
+      <div class="col s6">
+        <div class="from-fields">
+          <mat-radio-group name="userrole"  [(ngModel)]="data.userrole" #userrole="ngModel" name="userrole" [ngClass]="{'has-error' : userrole.invalid } " required=true>
+            
+            <mat-radio-button value="3">Senior Manager</mat-radio-button>
+            <mat-radio-button value="4">Manager</mat-radio-button>
+            <mat-radio-button value="5">Deputy Manager</mat-radio-button>
+            <mat-radio-button value="6">ASM</mat-radio-button>
+            <mat-radio-button value="7">Senior Executive</mat-radio-button>
+            <mat-radio-button value="8">Executive</mat-radio-button>
+            <div class="alert alert-danger" *ngIf="!userrole.valid && f.submitted">
+              Please select user role...
+            </div>
+          </div>
+        </div>
+      </div> -->
+      <!-- <div *ngIf="user_type=='saleuser'" class="row mb20">
+        <div class="col s12 pl0">
+          <div class="select-one"> -->
+            
+            
+            
+            <!-- <mat-form-field class="cs-input">
+              <mat-select name="userassign" aria-placeholder="Reporting Sales User Type" [(ngModel)]="data.userassign" #userassign="ngModel" [ngClass]="{'has-error' : userassign.invalid } " required=true>
+                <mat-option value="">Select Reporting Sales User Type</mat-option>
+                <mat-option *ngFor="let rsm of reporting_sales_type" value="{{rsm.id}}" (click)="assign_users(rsm.id,rsm.role_name)">{{rsm.role_name}}</mat-option>
+                
+              </mat-select>
+              <div class="alert alert-danger" *ngIf="!userassign.valid && f.submitted">
+                Reporting Sales user type is required...
+              </div>
+            </mat-form-field> -->
+            
+            <!-- <mat-radio-group name="userrole"  [(ngModel)]="data.userrole" #userrole="ngModel" name="userrole" [ngClass]="{'has-error' : userrole.invalid } " required=true>
+              
+              <mat-radio-button value="3">Senior Manager</mat-radio-button>
+              <mat-radio-button value="4">Manager</mat-radio-button>
+              <mat-radio-button value="5">Deputy Manager</mat-radio-button>
+              <mat-radio-button value="6">ASM</mat-radio-button>
+              <mat-radio-button value="7">Senior Executive</mat-radio-button>
+              <mat-radio-button value="8">Executive</mat-radio-button>
+              <div class="alert alert-danger" *ngIf="!userrole.valid && f.submitted">
+                Please select user role...
+              </div>
+            </mat-radio-group>
+          </div>
+        </div>
+      </div> -->
+      
+      <!-- <div class="row" *ngIf="user_type=='systemuser'">
+        <div class="col s12">
+          <div class="select-one">
+            <mat-radio-group name="userrole" #userrole="ngModel"  [(ngModel)]="data.userrole">
+              <mat-radio-button value="National">Admin</mat-radio-button> 
+              <mat-radio-button value="Regional">Sub Admin</mat-radio-button>
+            </mat-radio-group>
+          </div>
+        </div>
+      </div> -->
+      
+      
+      <div class="sprate-box main-bdr mt15">
+        <div class="cs-heading border-bottom mb20">
+          <h2>BASIC INFORMATION</h2>
+        </div>  
+        <div class="row mt10">
+          <div class="col s12">
+            <div class="col s6">
+              <div class="col s4">
+                <mat-form-field class="cs-input" appearance="outline">
+                  <mat-label>Select Sales User Designation</mat-label>
+                  <mat-select name="type" #type="ngModel" [(ngModel)]="data.user_role"
+                  [ngClass]="{'has-error' : type.invalid } " required>
+                  <mat-option disabled="">Select Sales User</mat-option>
+                  <mat-option *ngIf="data.user_type =='Sales User'" value="3">Sales Executive</mat-option>
+                  <mat-option *ngIf="data.user_type =='Sales User'" value="4">Sr. Manager</mat-option>
+                  <mat-option *ngIf="data.user_type =='Sales User'" value="5">Manager</mat-option>
+                 <mat-option *ngIf="data.user_type !='Sales User'" value="2">Sub-Admin</mat-option>
+                  <!-- <mat-option *ngIf="data.user_type !='Sales User'" value="6">Export Manager</mat-option>
+                  <mat-option *ngIf="data.user_type !='Sales User'" value="7">Sales Co-ordinator</mat-option>
+                  <mat-option *ngIf="data.user_type !='Sales User'" value="8">Human Resources</mat-option>
+                  <mat-option *ngIf="data.user_type !='Sales User'" value="11">Plant Manager</mat-option>
+                  <mat-option *ngIf="data.user_type !='Sales User'" value="12">Godown Manager</mat-option>
+                  <mat-option *ngIf="data.user_type !='Sales User'" value="13">Godown Incharge</mat-option> -->
+    
+                </mat-select>
+              </mat-form-field>
+              <div class="alert alert-danger" *ngIf="!type.valid && f.submitted">
+                Sales User is required...
+              </div>
+            </div>
+            <div class="col s4">
+              <mat-form-field class="cs-input" appearance="outline" [ngClass]="{'has-error' : name.invalid } ">
+                <mat-label>Name</mat-label>
+                <input matInput placeholder="Type Here ..." name="name" #name="ngModel" [(ngModel)]="data.name"
+                [ngClass]="{'has-error' : name.invalid } " required>
+              </mat-form-field>
+              <div class="alert alert-danger" *ngIf="!name.valid && f.submitted">
+                Name is required...
+              </div>
+            </div>
+            <div class="col s4">
+              <mat-form-field class="cs-input" appearance="outline" [ngClass]="{'has-error' : employee_code.invalid } ">
+                <mat-label>Employee Code</mat-label>
+                <input matInput placeholder="Type Here ..." name="employee_code" #employee_code="ngModel" [(ngModel)]="data.employee_code"
+                [ngClass]="{'has-error' : name.invalid } " required>
+              </mat-form-field>
+              <div class="alert alert-danger" *ngIf="!employee_code.valid && f.submitted">
+                Employee code is required...
+              </div>
+            </div>
+              
+            </div>
+            <div class="col s6">
+
+          </div>
+
+            <div class="col s3">
+              <mat-form-field class="cs-input" appearance="outline">
+                <mat-label>Mobile No</mat-label>
+                <input matInput placeholder="Type Here ..." type="tel" name="mobileno" #mobileno="ngModel"
+                [(ngModel)]="data.mobileno" minlength="10" maxlength="10" min="0" (keypress)="MobileNumber($event)" (input)="check_number()"
+                [ngClass]="{'has-error' : mobileno.invalid } " required>
+              </mat-form-field>
+              <div class="alert alert-danger" *ngIf="!mobileno.valid && f.submitted">
+                Mobile no. must be 10 digits...
+              </div>
+              <div *ngIf="!mobileno.valid && mobileno.errors?.maxlength">
+                Mobile No should be of 10 digits..
+                <div *ngIf="mobileno.errors?.minlength">
+                  Mobile No should be of 10 digits..
+                </div>
+              </div>
+              <div class="alert alert-danger" *ngIf="exist">
+                Mobile no. already Exists.
+              </div>
+            </div>
+            
+            <div class="col s3">
+              <mat-form-field class="cs-input" appearance="outline">
+                <mat-label>Email ID</mat-label>
+                <input matInput placeholder="Type Here ..." type="email" name="email" #email="ngModel"
+                [(ngModel)]="data.email" [ngClass]="{'has-error' : email.invalid } "
+                pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$">
+              </mat-form-field>
+              <div class="alert alert-danger" *ngIf="!email.valid && f.submitted">
+                Email Id is required...
+              </div>
+            </div>
+          </div>
+
+      </div>
+      <div class="row">
+        
+        <div class="col s6">
+          <div class="control-field">
+            <mat-form-field class="cs-input" appearance="outline">
+              <mat-label>Address</mat-label>
+              <textarea matInput placeholder="Type Here ..." name="address" #address="ngModel"
+              [(ngModel)]="data.address" class="h65"
+              ></textarea>
+            </mat-form-field>
+            
+          </div>
+        </div>
+        
+        <div class="col s6">
+          <div class="row">
+            <div class="col s6">
+              <mat-form-field class="cs-input" appearance="outline">
+                <mat-label>State</mat-label>
+                <mat-select name="state" placeholder="State" #state="ngModel" [(ngModel)]="data.state">
+                  <!-- [ngClass]="{'has-error' : state.invalid } " required -->
+                  <mat-option disabled="">Select State</mat-option>
+                  <mat-option *ngFor="let state of state_list" (keyup.enter)="getDistrict()"
+                  (click)="getDistrict()" value="{{state}}" 
+                  required>{{state}}</mat-option>
+                  
+                </mat-select>
+               
+              </mat-form-field>
+            </div>
+            <div class="col s6">
+              <mat-form-field class="cs-input" appearance="outline">
+                <mat-label>District</mat-label>
+                <mat-select name="district" #distric="ngModel" [(ngModel)]="data.district" >
+                  <!-- [ngClass]="{'has-error' : distric.invalid } " required -->
+                  <mat-option disabled="">Select District</mat-option>
+                  <mat-option *ngFor="let district of district_list" (keyup.enter)="getCityList()"
+                  (click)="getCityList()" value="{{district}}">{{district}}</mat-option>
+                  
+                </mat-select>
+               
+              </mat-form-field>
+            </div>
+          </div>
+          
+          <div class="row">
+            
+            <div class="col s6 ">
+              <mat-form-field class="cs-input" appearance="outline">
+                <mat-label>City</mat-label>
+                <mat-select name="city" #city="ngModel" [(ngModel)]="data.city" >
+                  <!-- [ngClass]="{'has-error' : city.invalid } " required -->
+                  <mat-option disabled="">Select City</mat-option>
+                  <mat-option *ngFor="let city of city_list" value="{{city}}">{{city}}</mat-option>
+                </mat-select>
+              
+              </mat-form-field>
+            </div>
+            
+            <div class="col s6 ">
+              <mat-form-field class="cs-input" appearance="outline" >
+                <mat-label>Pincode</mat-label>
+                <input matInput name="pincode" placeholder="Type Here ..." #pincode="ngModel" maxlength="6"
+                [(ngModel)]="data.pincode" >
+               
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col s6" *ngIf="data.user_type=='System User'">
+          <div class="territory-info">
+            <div class="head" [ngClass]="{'active':active.user==true}">
+              <h2>Module RIght</h2>
+              <!-- <i class="material-icons search-icon right20" (click)="toggleterritory('user','open')"  matRipple>search</i>
+                <div class="item-input">
+                  <input type="text" placeholder="search..." name="sales_executive" class="fix-search" (input)="getItemsList(search.sales_executive)" #sales_executive="ngModel" [(ngModel)]="search.sales_executive">
+                  <i class="material-icons close-icon" (click)="toggleterritory('user','close')" matRipple>clear</i>
+                </div> -->
+              </div>
+              
+              <div class="cs-logs">
+                <div class="cs-checkbox">
+                  <div class="checkbox-outer">
+                    <section class="checkbox-inner">
+                      <!-- <mat-checkbox class="check-list" name="" value="Dashbaord" >Dashbaord</mat-checkbox> -->
+                      <!-- <mat-checkbox class="check-list" name="view_leads" [(ngModel)]="access.view_leads">Lead </mat-checkbox> -->
+
+                      <mat-checkbox class="check-list" name="view_distribution_n_w" [(ngModel)]="access.view_distribution_n_w">Customer</mat-checkbox>
+
+                      <mat-checkbox class="check-list" name="view_orders" [(ngModel)]="access.view_orders">Orders</mat-checkbox>
+
+                      <!-- <mat-checkbox class="check-list" name="view_quotation" [(ngModel)]="access.quotation">Quotation</mat-checkbox> -->
+
+                      <mat-checkbox class="check-list" name="view_attendence" [(ngModel)]="access.view_attendence">Attendance</mat-checkbox>
+
+                      <mat-checkbox class="check-list" name="view_check_in" [(ngModel)]="access.view_check_in">CheckIn</mat-checkbox>
+
+                      <mat-checkbox class="check-list" name="view_leaves" [(ngModel)]="access.view_leaves">Leaves</mat-checkbox>
+
+                      <mat-checkbox class="check-list" name="view_travel_plan" [(ngModel)]="access.view_travel_plan">Travel Plan</mat-checkbox>
+
+                      <mat-checkbox class="check-list" name="follow_up" [(ngModel)]="access.follow_up">Follow Up</mat-checkbox>
+
+                      <mat-checkbox class="check-list" name="announcement" [(ngModel)]="access.announcement">Announcement</mat-checkbox>
+
+                      <mat-checkbox class="check-list" name="expense" [(ngModel)]="access.expense">Expense</mat-checkbox>
+                      
+                      <!-- <mat-checkbox class="check-list" name="view_contractor_meet" [(ngModel)]="access.view_contractor_meet">Contractor Meet </mat-checkbox> -->
+
+                      <!-- <mat-checkbox class="check-list" name="view_visting_card"[(ngModel)]="access.view_visting_card">Visting Card </mat-checkbox> -->
+
+                      <mat-checkbox class="check-list" name="view_pop_gift" [(ngModel)]="access.view_pop_gift">Pop & Gift </mat-checkbox>
+                      
+                      <mat-checkbox class="check-list" name="masters" [(ngModel)]="access.masters">Masters</mat-checkbox>
+                              </section>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col s6" *ngIf="data.user_type!='System User'">
+                      <div class="territory-info">
+                        <div class="head" [ngClass]="{'active':active.user==true}">
+                          <h2>Reporting Manager</h2>
+                          <i class="material-icons search-icon right20" (click)="toggleterritory('user','open')"
+                          matRipple>search</i>
+                          <div class="item-input">
+                            <input type="text" placeholder="search..." name="sales_executive" class="fix-search"
+                            (input)="getItemsList(search.sales_executive)" #sales_executive="ngModel"
+                            [(ngModel)]="search.sales_executive">
+                            <i class="material-icons close-icon" (click)="toggleterritory('user','close')" matRipple>clear</i>
+                          </div>
+                        </div>
+                        
+                        
+                        <div class="cs-logs">
+                          <div class="cs-checkbox">
+                            <div class="checkbox-outer">
+                              <section class="checkbox-inner">
+                                <ng-container *ngFor="let list of rsm_list;let index=index">
+                                  <mat-radio-button class="check-list" name="assign_user" (change)="user_assign_check(index)"
+                                  value="{{list.id}}">{{list.name}} |
+                                  {{list.role_name}}</mat-radio-button>
+                                </ng-container>
+                                <!-- <div class="alert alert-danger" *ngIf="userCheck &&  f.submitted">
+                                  User is required...
+                                </div> -->
+                              </section>
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <!-- <div class="cs-logs">
+                          <div class="cs-checkbox">
+                            <div class="checkbox-outer">
+                              <section class="checkbox-inner">
+                                <ng-container *ngFor="let list of rsm_list;let index=index" aria-required="true">
+                                  <mat-checkbox class="check-list" [checked]="list.check"
+                                  (change)="product_Brand(list.id,index,$event)" value="{{list.name}}">{{list.name}} |
+                                  {{list.role_name}}</mat-checkbox>
+                                </ng-container>
+                              </section>
+                            </div>
+                          </div>
+                        </div> -->
+                        
+                        <!-- <div class="col s12">
+                          <div class="cs-btn  text-right pb15">
+                            <div class="in-btn">
+                              <button mat-raised-button color="accent">Update</button>
+                            </div>
+                          </div>
+                        </div> -->
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                
+                <!-- <mat-divider class="left-right-15 mt10"></mat-divider> -->
+              </div>
+              <div class="col s12">
+                <div class="cs-btn fixedd mt32 text-right">
+                  <div class="in-btn">
+                    <button mat-raised-button color="accent" [disabled]="submit">Save</button>
+                  </div>
+                </div>
+              </div>
+              
+              <div *ngIf="loader">
+                <mat-spinner class="loader">
+                  <div>
+                    <p>Loading....</p>
+                  </div>
+                </mat-spinner>
+              </div>
+            </form>

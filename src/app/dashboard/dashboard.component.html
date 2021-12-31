@@ -1,0 +1,351 @@
+
+<div class="main-container dashboard">
+    <div class="container-outer hp100">
+        <div class="container">
+            
+            <div class="dashboard-counter" (click)="gotocustomerpage()">
+                <div class="counter-box" matRipple style="background: #64B5F6;">
+                    <div class="count-content" >
+                        <div class="icon-img">
+                            <i class="material-icons" style="color: #4DB6AC;">people</i>
+                        </div>
+                        <span>{{count.customer?count.customer:'0'}}</span>
+                    </div>
+                    <div class="count-footer">
+                        Total Customer
+                    </div>
+                </div>
+                <div class="counter-box" matRipple style="background: #4DB6AC;" (click)="gotoattendencepage()" >
+                    <div class="count-content pl0 pr0">
+                        <div class="equal-box">
+                            <p>{{count.present?count.present:'0'}}</p>
+                            <p>Present</p>
+                        </div>
+                        <div class="equal-box">
+                            <p>{{count.absent?count.absent:'0'}}</p>
+                            <p>Absent</p>
+                        </div>
+                    </div>
+                    <div class="count-footer">
+                        Attendence
+                    </div>
+                </div>
+                <div class="counter-box" matRipple style="background: #FFB74D;" (click)="gotocheckinpage()" >
+                    <div class="count-content pl0 pr0">
+                        <div class="equal-box">
+                            <p>{{count.checkin_mtd?count.checkin_mtd:'0'}}</p>
+                            <p>MTD</p>
+                        </div>
+                        
+                        <div class="equal-box">
+                            <p>{{count.checkin_today?count.checkin_today:'0'}}</p>
+                            <p>Today Check In</p>
+                        </div>
+                    </div>
+                    <div class="count-footer">
+                        Check In
+                    </div>
+                </div>
+                <div class="counter-box" matRipple style="background: #C0C0C0" (click)="gotovendorpage()">
+                    <div class="count-content" >
+                        <div class="icon-img">
+                            <i class="material-icons" style="color: #9553a0;">gps_fixed</i>
+                        </div>
+                        <span>{{count.vendor?count.vendor:'0'}}</span>
+                    </div>
+                    <div class="count-footer">
+                        Vendor
+                    </div>
+                </div>
+                <div class="counter-box" matRipple style="background: #AED581;" (click)="gotoorderpage()">
+                    <div class="count-content pl0 pr0">
+                        <div class="equal-box">
+                            <p>{{count.order_mtd.order_total?count.order_mtd.order_total:'0'}} </p>
+                            <p>MTD</p>
+                        </div>
+                        <!-- <div class="equal-box">
+                            <p>  &#8377;{{count.order_ytd.order_total?count.order_ytd.order_total:'0'}}/-</p>
+                            <p>YTD</p>
+                        </div> -->
+                        <div class="equal-box">
+                            <p>{{count.order_pending?count.order_pending:'0'}}</p>
+                            <p>Pending Order</p>
+                        </div>
+                    </div>
+                    <div class="count-footer">
+                        Orders
+                    </div>
+                </div>
+                <div class="counter-box" matRipple  style="background: #FF8A65;" (click)="gotoPurchaseorderpage()">
+                    <div class="count-content pl0 pr0">
+                        <div class="equal-box">
+                            <p>{{count.purchase_mtd.order_total?count.purchase_mtd.order_total:'0'}}</p>
+                            <p>MTD</p>
+                        </div>
+                        <!-- <div class="equal-box">
+                            <p>  &#8377;{{count.purchase_ytd.order_total?count.purchase_ytd.order_total:'0'}}/-</p>
+                            <p>YTD</p>
+                        </div> -->
+                        <div class="equal-box">
+                            <p>{{count.po_received_pending?count.po_received_pending:'0'}}</p>
+                            <p> Receiving Pending</p>
+                        </div>
+                    </div>
+                    <div class="count-footer">
+                        Purchase Order
+                    </div>
+                </div>
+            </div>
+            
+            
+            
+            
+            
+            <div class="row">
+                <div class="col s6">
+                    <div class="grap-column">
+                        <div class="graph-head bg-head">
+                            <h2>Pending Order Vs Stock</h2>
+                        </div>
+                        <div class="graph-head">
+                            <mat-form-field class="cs-input" appearance="outline">
+                                <mat-label>Select State</mat-label>
+                                <mat-select name="state" [(ngModel)]="data.state" #state="ngModel">
+                                    <mat-option  *ngFor="let states of stateData" value="{{states.state_name}}" (click)="order_dashboard()" >{{states.state_name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            
+                            <mat-form-field class="cs-input" appearance="outline">
+                                <mat-label>Select Brand</mat-label>
+                                <mat-select name="brand" [(ngModel)]="data.brand" #brand="ngModel">
+                                    <mat-option *ngFor="let bran of brandData "  value="{{bran.brand_name}}" (click)="order_dashboard()" >{{bran.brand_name}}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field> 
+                        </div>
+                        <ng-container >
+                            <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions"
+                            [legend]="barChartLegend" [chartType]="barChartType">
+                        </canvas> 
+                    </ng-container>
+                </div>
+            </div>
+            
+            <div class="col s6 figure">
+                <div class="grap-column">
+                    <div class="graph-head bg-head">
+                        <h2>Sales Order (Last 30 Days)</h2>
+                    </div>
+                    <div class="graph-head">
+                        <mat-form-field class="cs-input" appearance="outline">
+                            <mat-label>Select State</mat-label>
+                            <mat-select name="states" [(ngModel)]="data.state_name" >
+                                <mat-option  *ngFor="let state of stateData" value="{{state.state_name}}" (click)="salesData()" >{{state.state_name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        
+                        <mat-form-field class="cs-input" appearance="outline">
+                            <mat-label>Select Product</mat-label>
+                            <mat-select name="category" [(ngModel)]="data.category" >
+                                <mat-option *ngFor="let cat of category_data "  value="{{cat.category_name}}" (click)="salesData()" >{{cat.category_name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        
+                        <mat-form-field class="cs-input" appearance="outline">
+                            <mat-label>Select Brand</mat-label>
+                            <mat-select name="brands" [(ngModel)]="data.brand_name" >
+                                <mat-option *ngFor="let brand of brandData "  value="{{brand.brand_name}}" (click)="salesData();sizedata()" >{{brand.brand_name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        
+                        <mat-form-field class="cs-input" appearance="outline">
+                            <mat-label>Select Size</mat-label>
+                            <mat-select name="size" [(ngModel)]="data.size" >
+                                <mat-option *ngFor="let row of brandsize"  value="{{row.size}}" (click)="salesData()">{{row.size}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        
+                    </div>
+                    <ng-container >
+                        <canvas baseChart [datasets]="barChartData1" [labels]="barChartLabels1" [options]="barChartOptions"
+                        [legend]="barChartLegend" [chartType]="barChartType1">
+                    </canvas> 
+                </ng-container>
+            </div>
+        </div>
+        
+    </div>
+    
+    <div class="row">
+        <div class="col s6">
+            <div class="grap-column">
+                <div class="graph-head bg-head">
+                    <h2>Raw Material Stock Alert</h2>
+                </div>
+                <div class="cs-table horizontal-scroll">
+                    <div class="table-head">
+                        <table>
+                            <tr>
+                                <th class="w50">S.No</th>
+                                <th class="w100">Unit</th>
+                                <th class="w150">Item Detail</th>
+                                <th class="w100">Current Stock</th>   
+                                <th class="w100">Short Stock</th>   
+                            </tr>
+                        </table>
+                    </div>
+                    
+                    <div class="table-container">
+                        <div class="table-content">
+                            <table>
+                                <ng-container *ngFor="let raw of rawdata; let i= index">
+                                    
+                                    <tr  *ngIf="raw.short_stock != 0">
+                                        <td class="w50 text-center">{{i+1}}</td>
+                                        <td class="w100">{{raw.organization_name?raw.organization_name:'--'}}</td>
+                                        <td class="w150">{{raw.brand}}-{{raw.raw_name}}-{{raw.unit_of_measurement}}{{raw.state_name !='' ?'('+raw.state_name+')' : '' }} </td>
+                                        <td class="w100">{{raw.balance_stock}}</td>
+                                        <td class="w100">{{raw.short_stock}}</td>
+                                    </tr>
+                                </ng-container>
+
+                                
+                                
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col s6">
+            
+            <div class="grap-column">
+                <div class="graph-head bg-head">
+                    <h2>State Wise Production</h2>
+                </div>
+                <div class="cs-table horizontal-scroll">
+                    <div class="table-head">
+                        <table>
+                            <tr>
+                                <th class="w50">S.No</th>
+                                <th class="w100">State</th>
+                                <th class="w150">Item Detail</th>
+                                <th class="w100">Under Production</th>
+                            </tr>
+                        </table>
+                    </div>
+                    
+                    <div class="table-container">
+                        <div class="table-content">
+                            <table>
+                                <tr  *ngFor="let data of statewise; let i=index">
+                                    <td class="w50 text-center">{{i+1}}</td>
+                                    <td class="w110">{{data.state}}</td>
+                                    <td class="w150">{{data.category}}-{{data.brand}}-{{data.size}}</td>
+                                    <td class="w100">{{data.pending_production_qty}}</td>
+                                </tr>
+
+                              
+                                
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col s6">
+            <div class="grap-column">
+                <div class="graph-head bg-head">
+                    <h2>Latest Checkin</h2>
+                </div>
+                <div class="cs-table horizontal-scroll">
+                    <div class="table-head">
+                        <table>
+                            <tr>
+                                <th class="w50">S.No</th>
+                                <th class="w90">Date Created</th>
+                                <th class="w100">Created By</th>
+                                <th class="w100">Customer Name</th>
+                                <th class="w100">Check In</th>
+                                <th class="w100">Check Out</th>
+                                <th class="w100">Remark</th>
+                            </tr>
+                        </table>
+                    </div>
+                    
+                    <div class="table-container">
+                        <div class="table-content">
+                            <table>
+                                <tr *ngFor="let list of checkin; let i = index"  >
+                                    <td class="w50 text-center">{{i+1}}</td>
+                                    <td class="w90 text-center">{{list.date_created|date : 'd MMM y'}}</td>
+                                    <td class="w100">{{list.created_by_name?list.created_by_name:'--'}}</td>
+                                    <td class="w100">{{list.dr_name?list.dr_name:'--'}}</td>
+                                    <td class="w100">{{list.visit_start?(list.visit_start|date : 'h :mm a'):'--'}}</td>
+                                    <td class="w100">{{list.visit_end?(list.visit_end|date : 'h :mm a'):'--'}}</td>
+                                    <td class="w100">{{list.remark?list.remark:'--'}}</td>
+                                </tr>
+                                
+                             
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col s6">
+            <div class="grap-column">
+                <div class="graph-head bg-head">
+                    <h2>Latest Order</h2>
+                </div>
+                <div class="cs-table horizontal-scroll">
+                    <div class="table-head">
+                        <table>
+                            <tr>
+                                <th class="w50">S.No</th>
+                                <th class="w80">Order Id</th>
+                                <th class="w100">Date Created</th>
+                                <th class="w100">Created By</th>
+                                <th class="w100">Customer Name</th>
+                                <th class="w50">Total Item </th>
+                                <th class="w100">Status</th>
+                            </tr>
+                        </table>
+                    </div>
+                    
+                    <div class="table-container">
+                        <div class="table-content">
+                            <table>
+                                <tr *ngFor="let row of order; let i= index">
+                                    <td class="w50">{{i+1}}</td>
+                                    <td class="w80"><a class="link-btn" mat-button routerLink="/order-detail/{{row.id}}" routerLinkActive="active">{{row.order_no}}</a></td>
+                                    <td class="w100">{{row.date_created|date : 'd MMM y'}}</td>
+                                    <td class="w100">{{row.created_by_name}}</td>
+                                    <td class="w100">{{row.customer_name}}</td>
+                                    <td class="w50">{{row.order_item}}</td>
+                                    <td class="w100" [ngClass]="{'yellow-bgclr':row.order_status=='Pending','blue-bgclr':row.order_status=='Dispatch','green-bgclr':row.order_status=='Approved','red-bgclr':row.order_status=='Reject','skyblue-bgclr':row.order_status=='Partial Dispatch'}">{{row.order_status}}</td>
+                                </tr>
+                                
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    
+    
+    
+    <!-- <div style="display: flex;justify-content: center;align-items: center;height: 100%;">
+        <span style="font-size: 36px;color: #61290f;font-weight: 1000;" >
+            Coming Soon....
+        </span>
+    </div> -->
+</div>

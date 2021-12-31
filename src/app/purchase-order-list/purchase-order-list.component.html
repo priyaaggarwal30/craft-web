@@ -1,0 +1,153 @@
+<div class="main-container" >
+  <div class="middle-container">
+    <div class="page-heading">
+      <div class="heading-text">
+        <h2>Purchase Order</h2>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container-outer padding0">
+    <div class="container mb60" >
+      <div class="cs-table">
+        <div class="sticky-head">
+          <div class="table-head">
+            <table class="sno-border">
+              <tr >
+                <th class="w50">S.No</th>
+                <th class="w100">Date Created</th>
+                <th class="w100 text-center">Unit</th>               
+                <th class="w90">Created By</th>
+                <th class="w90">Order Id</th>
+                <th class="w100 text-center">Contact Person</th>
+                <th class="w100 text-center">Total Order Item</th>               
+                <th class="w100 text-center">Total Item Qty</th>               
+                <th class="w100 text-center">Received Qty</th>               
+                <th class="w100 text-center">Pending Qty</th>               
+                <th class="w80 text-center">Status</th>
+                <th class="w60 text-center">Action</th>
+              </tr>
+            </table>
+          </div>   
+        </div>
+        
+        <div class="table-head bdrt">
+          <table class="sno-border">
+            <tr>
+              <th class="w50">&nbsp;</th>
+              <th class="w100"></th>
+              <th class="w100">
+              
+                <div class="th-search-acmt">
+                  <mat-form-field class="example-full-width cs-input select-input">
+                    <input matInput placeholder="Enter Name...." name="unit" #unit="ngModel" [(ngModel)]="data.unit"
+                      (keyup.enter)="purchse_item_list()">
+                  </mat-form-field>
+                </div>
+              
+              </th>
+              <th class="w90">
+                <div class="th-search-acmt">
+                  <mat-form-field class="example-full-width cs-input select-input">
+                    <input matInput placeholder="Enter Name...."   name="created_by" #created_by="ngModel" [(ngModel)]="data.created_by" (keyup.enter)="purchse_item_list()">
+                  </mat-form-field>
+                </div>
+              </th>
+              <th class="w90">
+                <div class="th-search-acmt">
+                  <mat-form-field class="example-full-width cs-input select-input">
+                    <input matInput placeholder="Enter Name...."   name="order_id" #order_id="ngModel" [(ngModel)]="data.order_id" (keyup.enter)="purchse_item_list()">
+                  </mat-form-field>
+                </div>
+                
+              </th>
+              
+              <th class="w100">
+                <div class="th-search-acmt">
+                  <mat-form-field class="example-full-width cs-input select-input">
+                    <input matInput placeholder="Enter Name...."   name="vendor_name" #vendor_name="ngModel" [(ngModel)]="data.vendor_name" (keyup.enter)="purchse_item_list()">
+                  </mat-form-field>
+                </div>
+              </th>
+             
+                <th class="w100">
+                  </th>
+                  
+                  <th class="w100">
+                  </th>
+                  
+                  <th class="w100"></th>
+                  <th class="w100"></th>
+                  <th class="w80">
+                    <div class="th-search-acmt">
+                      <mat-form-field class="example-full-width cs-input select-input">
+                        <input matInput placeholder="Enter Name...."   name="status" #status="ngModel" [(ngModel)]="data.status" (keyup.enter)="purchse_item_list()">
+                      </mat-form-field>
+                    </div>
+                  </th>
+                  <th class="w60"></th>
+                  
+                </tr>
+              </table>
+            </div>
+            
+            
+            <div class="table-container">
+              <div class="table-content">
+                <table class="sno-border">
+                  <tr *ngFor="let list of item_data;let i=index">
+                    <td class="w50">{{i+1}}</td>
+                    <td class="w100">{{list.date_created|date:'dd-MM-yyyy'}}</td>
+                    <td class="w100 text-center">{{list.organization_name}}</td>
+                    <td class="w90">{{list.name}}</td>
+                    <td class="w90"><a class="link-btn" routerLink="/purchase-order-detail/{{list.id}}" routerLinkActive="active" mat-button>{{list.purchase_order_id}}</a></td>
+                    <td class="w100 text-center">{{list.company_name}} - ({{list.contact_no}})</td>
+                    <td class="w100 text-center">{{list.order_item}}</td>
+                    <td class="w100 text-center">{{list.order_item_qty}}</td>
+                    <td class="w100 text-center">{{list.recived_qty}}</td>
+                    <td class="w100 text-center">{{list.pending_qty}}</td>
+                    <td class="w80 text-center" [ngClass]="{'yellow-bgclr':list.order_status=='Pending','green-bgclr':list.order_status=='Received'}">{{list.order_status}}</td>
+                    <td class="w60 text-center">
+                      <!-- <button mat-button class="delete-mat" routerLink="/add-purchase-order/{{list.id}}" routerLinkActive="active" > <i class="material-icons green-clr" mat-button matTooltip="Edit">create</i></button> -->
+                      <button mat-button class="delete-mat" (click)="delete_item(list.id)"><i class="material-icons red-clr" >delete_sweep</i></button>            
+                    </td>
+                  </tr>
+                  
+                  <ng-container *ngFor="let lead of skelton">
+                    <tr class="sk-loading"  *ngIf="loader">
+                      <td class="w30"><div>&nbsp;</div></td>
+                      <td class="w100"><div>&nbsp;</div></td>
+                      <td class="w100"><div>&nbsp;</div></td>
+                      <td class="w90"><div>&nbsp;</div></td>
+                      <td  class="w90"><div>&nbsp;</div></td>
+                      <td class="w100"><div>&nbsp;</div></td>
+                      <td class="w100"><div>&nbsp;</div></td>
+                      <td class="w100"><div>&nbsp;</div></td>
+                      <td class="w100"><div>&nbsp;</div></td>
+                      <td class="w100"><div>&nbsp;</div></td>
+                      <td class="80"><div>&nbsp;</div></td>
+                      <td class="w60"><div>&nbsp;</div></td>
+                    </tr>
+                  </ng-container>
+                </table>
+              </div>
+            </div>
+            
+            
+            <div class="no-data" *ngIf="data_not_found==true">
+              <img src="assets/img/no-data.gif" alt="">
+              <p>Data not <span>available !</span></p>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+      
+      
+      <div class="fix-btn">
+        <a class="bottom-btn ecxel-btn" matTooltip="Download Excel" matTooltipPosition="above" mat-raised-button (click)="exportAsXLSX()"><img src="assets/img/excel.svg"></a>    
+        <a class="bottom-btn" matTooltip="Add New" matTooltipPosition="above" mat-raised-button routerLink="/add-purchase-order/0" routerLinkActive="active"><i class="material-icons">add</i></a>
+      </div>
+      
+    </div>
+    

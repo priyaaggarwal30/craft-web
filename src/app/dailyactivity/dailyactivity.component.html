@@ -1,0 +1,59 @@
+<div class="edit-modal">
+  <div mat-dialog-content>
+    <p class="heading">Checkins Activity</p>
+    
+    <div class="checkin-table">
+      <div class="top-head">
+        <h2>Order Value</h2>
+        <span *ngIf="data.list.order_total"> &#x20B9; {{data.list.order_total}} </span>
+        <span *ngIf="!data.list.order_total"> -- </span>
+      </div>
+      <table>
+        <tr>
+          <th>Followups</th>
+          <td>
+            <span class="material-icons" *ngIf="(data.list.followup_flag=='1')"> verified</span>
+            <span  class="material-icons"  *ngIf="(data.list.followup_flag=='0')">cancel</span>
+          </td>
+          <th>Pop &Gift</th>
+          <td>
+            <span class="material-icons"  *ngIf="(data.list.popgift_flag=='1')"> verified</span>
+            <span class="material-icons"  *ngIf="(data.list.popgift_flag=='0')">cancel</span>
+          </td>
+        </tr>
+     
+        <tr>
+          <th>Visiting Cards:</th>
+          <td >
+            <span class="material-icons" *ngIf="(data.list.visitingCard_flag=='1')" > verified</span>
+            <span class="material-icons" *ngIf="(data.list.visitingCard_flag=='0')">cancel</span>
+          </td>
+          <th>Contractor Meet:</th>
+          <td >
+            <span class="material-icons" *ngIf="(data.list.contractor_meet_flag=='1')"> verified</span>
+            <span class="material-icons" *ngIf="(data.list.contractor_meet_flag=='0')">cancel</span>
+          </td>
+        </tr>
+        <tr>
+          <th >Quotation:</th>
+          <td colspan="3">
+            <span class="material-icons" *ngIf="(data.list.quotation_flag=='1')"> verified</span>
+            <span class="material-icons" *ngIf="(data.list.quotation_flag=='0')">cancel</span>
+          </td>
+        </tr>
+        <tr>
+          <th>Remarks:</th>
+          <td  colspan="3">
+            <ng-container  *ngIf="data.list.description">{{data.list.description}}</ng-container>
+            <ng-container  *ngIf="!data.list.description">---</ng-container>
+          </td>
+        </tr>
+        
+      </table>
+    </div>
+    
+    <div mat-dialog-actions>
+      <button mat-button color="warn" [mat-dialog-close]="false">Cancel</button>
+    </div>
+  </div>
+  

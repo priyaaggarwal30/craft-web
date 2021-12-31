@@ -1,0 +1,189 @@
+<div class="main-container" >
+  <div *ngIf="loader">
+    <mat-spinner class="loader">
+      <div><p>Loading....</p></div>
+    </mat-spinner>
+  </div>
+  <div class="middle-container">
+    <div class="page-heading">
+      <div class="heading-text bc-space">
+        <div class="back-btn">
+          <a mat-button routerLink="/product-master-list" routerLinkActive="active"><i class="material-icons">west</i></a>
+        </div>
+        <h2>Product Detail</h2>
+        
+      </div>
+    </div>
+    
+  </div>
+  
+  
+  <div class="container-outer">
+    <div class="container" >
+      <div class="row">
+        <div class="col s12">
+          <div class="details-info">
+            <div class="basic-details">
+              <div class="cs-heading">
+                <h2>Basic Detail</h2>
+              </div>
+              <div class="profile-info">
+                <div class="row">
+                  <div class="col s9">
+                    <ul class="ais">
+                      <li class="col s4">
+                        <div class="cs-box">
+                          <img src="../assets/img/businessman.png" class="fix-img">
+                          <span>Created By</span>
+                          <p>{{productdetail.name?productdetail.name:'--'}}</p>
+                          <!-- <a  class="edit-icon" color="accent" matRipple matTooltip="EDIT" (click)="openEditDialog(vendor_data.company_name,'company_name')" ><i class="material-icons">create</i></a> -->
+                        </div>
+                      </li>
+                      <li class="col s4">
+                        <div class="cs-box">
+                          <img src="../assets/img/capitol.png" class="fix-img">
+                          <span>State</span>
+                          <p>{{productdetail.state?productdetail.state:'--'}}</p>
+                          <!-- <a  class="edit-icon" color="accent" matRipple matTooltip="EDIT" (click)="openEditDialog(vendor_data.company_name,'company_name')" ><i class="material-icons">create</i></a> -->
+                        </div>
+                      </li>
+                      <li class="col s4">
+                        <div class="cs-box">
+                          <img src="../assets/img/subfolder.png" class="fix-img">
+                          <span>Category</span>
+                          <p>{{productdetail.category?productdetail.category:'--'}}</p>
+                          <!-- <a  class="edit-icon" color="accent" matRipple matTooltip="EDIT" (click)="openEditDialog(vendor_data.company_name,'company_name')" ><i class="material-icons">create</i></a> -->
+                        </div>
+                      </li>
+                      <li class="col s4">
+                        <div class="cs-box">
+                          <img src="../assets/img/brand-image.png" class="fix-img">
+                          <span>Brand</span>
+                          <p>{{productdetail.brand?productdetail.brand:'--'}}</p>
+                          <!-- <a  class="edit-icon" color="accent" matRipple matTooltip="EDIT"(click)="openEditDialog(vendor_data.name,'name')"  ><i class="material-icons">create</i></a> -->
+                        </div>
+                      </li>
+                      
+                      
+                    </ul>
+                    <ul class="ais">
+                      
+                      <li class="col s4">
+                        <div class="cs-box">
+                          <img src="../assets/img/shopping-bag.png" class="fix-img">
+                          <span>Item code</span>
+                          <p>{{productdetail.item_code?productdetail.item_code:'--'}}</p>
+                          <!-- <a  class="edit-icon" color="accent" matRipple matTooltip="EDIT" (click)="openEditDialog(vendor_data.email,'email')" ><i class="material-icons">create</i></a> -->
+                        </div>
+                      </li>
+                      <li class="col s4">
+                        <div class="cs-box">
+                          <img src="../assets/img/rupee.png" class="fix-img">
+                          <span>MRP</span>
+                          <p>&#8377;{{productdetail.mrp?productdetail.mrp:'--'}}</p>
+                          <!-- <a  class="edit-icon" color="accent" matRipple matTooltip="EDIT" (click)="openEditDialog(vendor_data.mobile,'mobile')"  ><i class="material-icons">create</i></a> -->
+                        </div>
+                      </li>
+                      <li class="col s4">
+                        <div class="cs-box">
+                          <img src="../assets/img/measuring.png" class="fix-img">
+                          <span>Size</span>
+                          <p>{{productdetail.mrp?productdetail.size:'--'}}</p>
+                          <!-- <a  class="edit-icon" color="accent" matRipple matTooltip="EDIT" (click)="openEditDialog(vendor_data.mobile,'mobile')"  ><i class="material-icons">create</i></a> -->
+                        </div>
+                      </li>
+                      <li class="col s4">
+                        <div class="cs-box">
+                          <img src="../assets/img/measuring.png" class="fix-img">
+                          <span>Stock Alert</span>
+                          <p>{{productdetail.stock_alert?productdetail.stock_alert:'--'}}</p>
+                          <!-- <a  class="edit-icon" color="accent" matRipple matTooltip="EDIT" (click)="openEditDialog(vendor_data.mobile,'mobile')"  ><i class="material-icons">create</i></a> -->
+                        </div>
+                      </li>
+                    </ul>
+                    
+                  </div>
+                  <div class="col s3">
+                    <div class="row" >
+                      <div class="col s12">
+                        <div class="cs-file">
+                          <p>Image</p>
+                          <ul class="product-images">
+                            <li class="multi-images">
+                              <label class="cs-file-img">
+                                <img src="http://phpstack-83335-2231038.cloudwaysapps.com/api/uploads/Products/{{productdetail.product_image}}" alt="your image" (click)="openImage(productdetail.product_image)">
+                              </label>
+                                <label class="cs-file-img" *ngIf="productdetail.product_image==''">
+                                  <img src="https://st4.depositphotos.com/14953852/24787/v/600/depositphotos_247872612-stock-illustration-no-image-available-icon-vector.jpg" alt="">
+                                </label>
+                              
+                              
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                
+                
+              </div>
+              
+              
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="details-info">
+        
+        <div class="basic-details">
+          <div class="cs-heading">
+            <h2>Raw material Cosumption</h2>
+          </div>  
+          <div class="row">
+            <div class="col s12">
+              <div class="cs-table">
+                <div class="table-head">
+                  <table class="sno-border">
+                    <tr>
+                      <th class="w60">S.No</th>
+                      <th class="w350">Item Name</th>
+                      <th >Qty</th>
+                    </tr>
+                  </table>
+                </div>
+                
+                <div class="table-container">
+                  <div class="table-content">
+                    <table class="sno-border">
+                      <tr *ngFor="let list of productdetail['raw_material'];let i =index"  >
+                        <td class="w60">{{i+1}}</td>
+                        <td class="w350">{{list.raw_material_name}}-{{list.brand}}-{{list.unit_of_measurment}}</td>
+                        <td>{{list.raw_material_qty}}</td>
+                      </tr>
+                      
+                    </table>
+                  </div>
+                </div>
+                
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        
+        
+      </div>
+      
+    </div>
+    
+    
+  </div>
+  
+  
+</div>
+
+
+

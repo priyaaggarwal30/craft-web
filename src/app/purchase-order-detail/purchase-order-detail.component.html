@@ -1,0 +1,313 @@
+<div class="main-container ">
+  
+  <!-- <div >
+    <mat-spinner class="loader">
+      <div><p>Loading....</p></div>
+    </mat-spinner>
+  </div> -->
+  <div class="middle-container">
+    <div class="page-heading" >
+      <div class="heading-text bc-space">
+        <div class="back-btn" (click)="back()">
+          <a mat-button ><i class="material-icons">west</i></a>
+        </div> 
+        <h2> Purchase Order Details</h2>
+      </div>
+      
+    </div>
+    
+    <div class="left-auto" *ngIf="order_data.order_status != 'Received'">
+      <button mat-button [matMenuTriggerFor]="menu">Action</button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="onClick()">Receive Order</button>
+        <!-- <button mat-menu-item (click)="receiving_list()">View Receive Detail</button> -->
+      </mat-menu>
+    </div>
+    
+  </div>
+  
+  
+  <div class="container-outer">
+    <div class="container" >
+      <div class="row" >
+        <div class="col s12">
+          <div class="details-info">
+            <div class="basic-details">
+              <div class="cs-heading">
+                <h2>Order Details</h2>
+              </div>
+              <div class="cs-figure">
+                <ul>
+                  <li class="w100" style="min-width: 100px;">
+                    <div class="outer">
+                      <div class="inner">
+                        <span> Date</span>
+                        <p>{{order_data.date_created  | date :' dd/MM/yyyy'}}</p>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Order ID</span>
+                        <p>{{order_data.purchase_order_id}}</p>
+                      </div>
+                    </div>
+                  </li>
+                  <li >
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Created By</span>
+                        <p>{{order_data.name}}</p>
+                      </div>
+                    </div>
+                  </li>
+                  
+                  <li >
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Unit</span>
+                        <p>{{order_data.organization_name}}</p>
+                      </div>
+                    </div>
+                  </li>
+                  <li >
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Total Order Item</span>
+                        <p>{{order_data.total_items}}</p>
+                      </div>
+                    </div>
+                  </li>
+                  <li >
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Total Order Qty</span>
+                        <p>{{order_data.order_item_qty}}</p>
+                      </div>
+                    </div>
+                  </li> 
+                  <li >
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Total Order Amount</span>
+                        <p>&#8377;{{order_data.order_total}}</p>
+                      </div>
+                    </div>
+                  </li>
+
+                  <li >
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Order status</span>
+                        <p>{{order_data.order_status}}</p>
+                      </div>
+                    </div>
+                  </li>
+                 
+                </ul>
+                
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        
+      </div>
+      
+      <div class="row" >
+        <div class="col s12">
+          <div class="details-info">
+            <div class="basic-details">
+              <div class="cs-heading">
+                <h2>Vendor Details</h2>
+              </div>
+              <div class="cs-figure">
+                <ul>
+                
+                  <li>
+                    <div class="outer">
+                      <div class="inner">
+                        <span>company Name</span>
+                        <p>{{order_data.company_name}}</p>
+                      </div>
+                    </div>
+                  </li>
+                  <li >
+                    <div class="outer">
+                      <div class="inner">
+                        <span> vendor Name</span>
+                        <p>{{order_data.name }}</p>
+                      </div>
+                    </div>
+                  </li>
+                  <li >
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Contact Number</span>
+                        <p>{{order_data.mobile}}</p>
+                      </div>
+                    </div>
+                  </li>
+                  
+                </ul> 
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        
+      </div>
+      
+      
+      
+      <div class="row">
+        <div class="col s12">
+          <div class="heading-bg left-right-15 mb0">
+            <h2> Purchase Item Detail</h2>
+          </div>
+          <div class="cs-table left-right-15">
+            <div class="table-head">
+              <table class="sno-border">
+                <tr>
+                  <th class="w40">S.No</th>
+                  <th class="w100">Item Name</th>
+                  <th class="w100">State</th>
+                  <th class="w100">Brand</th>
+                  <th class="w100">Size</th>
+                  <th class="w100">Order Qty</th>
+                  <th class="w100">Received Qty</th>
+                  <th class="w100">Pending Qty</th>
+                  <th class="w100" *ngIf="order_data.order_status=='Pending'">Lead Time</th>
+                  <th class="w100" *ngIf="order_data.order_status=='Pending'">Tentative Time</th>
+                  <th class="w100">Rate</th>
+                  <th class="w80"> Amount</th>
+                </tr>
+              </table>
+            </div>
+
+            <div class="table-container">
+              <div class="table-content">
+                <table class="sno-border">
+                  <tr *ngFor="let row of order_data['order_item'];let i=index">
+                    <td class="w40">{{i+1}}</td>
+                    <td class="w100">{{row.raw_name}}</td>
+                    <td class="w100">{{row.state_name?row.state_name:'---'}}</td>
+                    <td class="w100">{{row.brand}}</td>
+                    <td class="w100">{{row.unit_of_measurement}}</td>
+                    <td class="w100">
+                      <div class="td-input" >
+                        <input type="number" class="input-bdr" value="{{row.qty}}"  name="qty" #qty="ngModel" [(ngModel)]="row.qty" (ngModelChange)="calc(row.id,row.qty)" [readonly]="show_save==0?true:false">
+                        <div class="edit">
+                            <a class="edit-icon edit" *ngIf="show_save == '0' && row.received_qty==0">
+                                <i class="material-icons" (click)="show_save = row.id">create</i>
+                            </a>
+                            <a class="edit-icon save" *ngIf="show_save == row.id">
+                                <i class="material-icons" (click)="show_save = '0';update_order(row.id)">save</i>
+                            </a>
+                        </div>
+                    </div></td>
+                    <td class="w100">{{row.received_qty}}</td>
+                    <td class="w100">{{row.pending_qty}}</td>
+                    <td class="w100" *ngIf="order_data.order_status=='Pending'">{{row.lead_time ? row.lead_time +' Days' : '' }}</td>
+                    <td class="w100" *ngIf="order_data.order_status=='Pending'">{{row.tentative_time|date:'dd-MM-yyyy'}}</td>
+                    <td class="w100">&#8377;{{row.price}}</td>
+                    <td class="w80">&#8377;{{row.amount}}</td>      
+                  </tr>
+                  
+                </table>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col s8">&nbsp;</div>
+              <div class="col s4">
+                <div class="invoice-table">
+                  <table>
+                    
+                    <tr >
+                      <td>Total Order Qty</td>
+                      <td class="text-center"><strong>:</strong></td>
+                      <td class="text-right ">{{order_data.order_item_qty}}</td>
+                    </tr>
+                    
+                    
+                    <tr >
+                      <td>Total Amount</td>
+                      <td class="text-center">:</td>
+                      <td class="text-right ">&#8377;{{order_data.order_total}}</td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+      
+      <div class="row" *ngIf="order_data['recievedOrder']?.length">
+        <div class="col s12">
+          <div class="heading-bg left-right-15 mb0">
+            <h2> Received Item Detail</h2>
+          </div>
+          <div class="cs-table left-right-15">
+            <div class="table-head">
+              <table class="sno-border">
+                <tr>
+                  <th class="w40">S.No</th>
+                  <th class="w100">Receiving Date</th>
+                  <th class="w100">Received By</th>
+                  <th class="w100">Invoice Date</th>
+                  <th class="w100">Invoice Number</th>
+                  <th class="w100">Invoice Amount</th>
+                  <th class="w100">Invoice</th>
+                  <th class="w100">Action</th>
+                  
+                </tr>
+              </table>
+            </div>
+            
+            <div class="table-container">
+              <div class="table-content">
+                <table class="sno-border">
+                  <tr *ngFor="let row of order_data['recievedOrder'];let i=index">
+                    <td class="w40">{{i+1}}</td>
+                    <td class="w100">{{row.date_created|date:'dd-MM-yyyy'}}</td>
+                    <td class="w100">{{row.name}}</td>
+                    <td class="w100">{{row.invoice_date|date:'dd-MM-yyyy'}}</td>
+                    <td class="w100">{{row.invoice_no}}</td>
+                    <td class="w100">&#8377;{{row.invoice_amount}}</td>
+                    <td class="w100">
+                      <img   src="http://phpstack-83335-2231038.cloudwaysapps.com/api/uploads/invoice/{{row.invoice_image}}" style="width: 40px; height: 40px; border-radius: 100px;" (click)="openImage(row.invoice_image)" >
+                    </td>
+                    <td class="w100">
+                      <button mat-raised-button  class="delete-mat" color="accent" (click)="view_receive_detail(row.id)" > View detail</button>
+                    </td>
+                    
+                  </tr>
+                  
+                </table>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+      
+      
+    </div>
+    <!-- <div class="row">
+      <div class="col s12">
+        
+        </div>
+      </div>
+    </div> -->
+  </div>
+  
+</div>
+
+
+
+
+

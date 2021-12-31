@@ -1,0 +1,141 @@
+<div class="main-container ">
+  
+  <div *ngIf="loader" class="spiner-bg">
+    <mat-spinner class="loader">
+      <div>
+        <p>Loading....</p>
+      </div>
+    </mat-spinner>
+  </div>
+  <div class="middle-container">
+    <div class="page-heading">
+      <div class="heading-text bc-space">
+        <div class="back-btn" (click)="back()">
+          <a mat-button><i class="material-icons">west</i></a>
+        </div>
+        <h2>Production Details</h2>
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="container-outer">
+    <div class="container">
+      <div class="row">
+        <div class="col s6">
+          <div class="details-info">
+            <div class="basic-details">
+              <div class="cs-heading">
+                <h2>Production Details</h2>
+              </div>
+              <div class="cs-figure">
+                <ul>
+                  <li class="w100" style="min-width: 100px;">
+                    <div class="outer">
+                      <div class="inner">
+                        <span> Date</span>
+                        <p>{{productionPlanData.date_created | date :' dd/MM/yyyy'}}</p>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Created By Name</span>
+                        <p>{{productionPlanData.created_by_name}}</p>
+                      </div>
+                    </div>
+                  </li>
+
+                    <li class="w130 " style="min-width: 130px;" *ngIf="productionPlanData.type!='3'">
+                      <div class="outer">
+                        <div class="inner">
+                          <span>Status</span>
+                          <p> {{productionPlanData.status}} </p>
+                        </div>
+                      </div>
+                    </li>
+                  
+                </ul>
+                <ul class="mt10">
+                  <li>
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Organization Name</span>
+                        <p>{{productionPlanData.organization_name}}</p>
+                      </div>
+                    </div>
+                  </li>
+                    <li>
+                      <div class="outer">
+                        <div class="inner">
+                          <span>State Name</span>
+                          <p>{{productionPlanData.state_name}}</p>
+                        </div>
+                      </div>
+                    </li>
+                  <li>
+                    <div class="outer">
+                      <div class="inner">
+                        <span>Total Item</span>
+                        <p>{{productionPlanData.total_products}}</p>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+                
+             
+              </div>
+            </div>
+          </div>
+          
+          
+        </div>
+        <div class="col s6">
+          <div class="heading-bg left-right-15 mb0">
+            <h2>Production Item</h2>
+          </div>
+          <div class="cs-table left-right-15">
+            <div class="table-head">
+              <table class="sno-border">
+                <tr>
+                  <th class="w40 text-center"></th>
+                  <th>Brand</th>
+                  <th class="w150">Category</th>
+                  <th class="w80">Size</th>
+                  <th class="w80"> Total</th>
+                  <th class="w80"> Pending</th>
+                  <th class="w80"> Received</th>
+               
+                </tr>
+              </table>
+            </div>
+            
+            <div class="table-container">
+              <div class="table-content">
+                <table class="sno-border">
+                  <tr *ngFor="let row of productionPlanData.product_item; let i=index;">
+                    <td class="w40 text-center">{{i+1}}</td>
+                    <td>{{row.brand}}</td>
+                    <td class="w150">{{row.category}}</td>
+                    <td class="w80">{{row.size}}</td>
+                    <td class="w80">{{row.total_production_qty}}</td>
+                    <td class="w80">{{row.pending_production_qty}}</td>
+                    <td class="w80">{{row.received_production_qty}}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+        
+        
+        
+      </div>
+      
+      
+    </div>
+  </div>
+  
+</div>

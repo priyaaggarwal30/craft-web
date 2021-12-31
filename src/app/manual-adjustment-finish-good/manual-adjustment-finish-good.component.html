@@ -1,0 +1,214 @@
+<div *ngIf="loader" class="spiner-bg">
+  <mat-spinner class="loader ">
+    <div>
+      <p>Loading....</p>
+    </div>
+  </mat-spinner>
+</div>
+<div class="main-container">
+  <div class="middle-container">
+    <div class="page-heading">
+      <div class="heading-text bc-space">
+        <div class="back-btn" (click)="back()"  >
+          <a mat-button ><i class="material-icons">west</i></a>
+        </div>
+        <h2>Adjust Stock</h2>
+        <!-- <div *ngIf="id == 0">
+          <p>Add New</p>
+        </div> -->
+        <!-- <div *ngIf="id != 0">
+          <p>update</p>
+        </div> -->
+        
+      </div>
+    </div>
+  </div>
+  
+  
+  <div class="container-outer">
+    <form #f="ngForm" (ngSubmit)="f.valid && adjust_multiple_stock()" >
+      <div class="container tab-container">
+        
+        
+        <div class="row">
+          <div class="col s12">
+            <div class="sprate-box cs-form pb0">
+              <div class="cs-heading">
+                <h2>Basic Information</h2>
+                <span class="required">Indicates required fields ( <sup>*</sup> )</span>
+              </div>
+              <mat-divider class="left-right-15 mt10"></mat-divider>
+              <div class="row mt10">
+                <div class="col s4">
+                  <mat-form-field class="cs-input" appearance="outline" >
+                    <mat-label>Unit</mat-label>
+                    <mat-select name="organization" [(ngModel)]="data.organization"  #organization="ngModel" [ngClass]="{'has-error':organization.invalid}" required>
+                      <mat-option *ngFor="let org of organizaton_data" value="{{org.id}}" (click)="assignstate_list(org.id);data.organization_name=org.organization_name">{{org.organization_name}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="col s4">
+                  <mat-form-field class="cs-input" appearance="outline" >
+                    <mat-label>State</mat-label>
+                    <mat-select name="state" [(ngModel)]="data.state"  #state="ngModel" [ngClass]="{'has-error':state.invalid}" required>
+                      <mat-option *ngFor="let state of state_list" value="{{state.state_name}}" (click)="stock_information()">{{state.state_name}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+               
+                
+                <div class="col s4">
+                  <mat-form-field class="cs-input" appearance="outline">
+                    <mat-label>Item Name</mat-label>
+                    <mat-select name="material_type" [(ngModel)]="data.item_name"  #item_name="ngModel" [ngClass]="{'has-error':item_name.invalid}"  required>
+                      <div class="search-block">
+                        <input type="text" name="item_search" placeholder="Search.." (input)="filter_dr(tmpsearch.search)" #search="ngModel"
+                          [(ngModel)]="tmpsearch.search">
+                      </div>
+                      <mat-option *ngFor="let list of stock_data" value="{{list.id}}" (click)="check_info();data.item_name_name = list.category;data.balance_stock=list.balance_stock;data.brand=list.brand;data.category=list.category;data.size=list.size;data.product_id=list.id">{{list.category}}-{{list.brand}}-{{list.size}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                
+                
+                
+              </div>  
+
+             
+              <div class="row">
+
+                <div class="col s4">
+                  <div class="row">
+                    <div class="col s12" >
+                      <mat-form-field class="cs-input" appearance="outline" >
+                        <mat-label>Adjustment Type</mat-label>
+                        <mat-select name="adjustment_type" [(ngModel)]="data.adjustment_type" #adjustment_type="ngModel" [ngClass]="{'has-error':adjustment_type.invalid}" required>
+                          <mat-option value="{{'increment'}}">Increment</mat-option>
+                          <mat-option value="{{'decrement'}}">Decrement</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  
+                  <div class="row">
+                    <div class="col s12" >
+                      <mat-form-field class="cs-input" appearance="outline">
+                        <mat-label>Current Stock</mat-label>
+                        <input matInput placeholder="Type Here ..." readonly name="balance_stock" [(ngModel)]="data.balance_stock"  #balance_stock="ngModel" [ngClass]="{'has-error':balance_stock.invalid}"  required>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col s12" >
+                      <mat-form-field class="cs-input" appearance="outline">
+                        <mat-label>Adjustment Stock</mat-label>
+                        <input matInput placeholder="Type Here ..." name="adjustment_stock" [(ngModel)]="data.adjustment_stock"  #adjustment_stock="ngModel" [ngClass]="{'has-error':adjustment_stock.invalid}" (keyup)="check_qty()" required>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                </div>
+
+               
+                <div class="col s8">
+                  <mat-form-field class="cs-input" appearance="outline" >
+                    <mat-label>Reason of Adjustment</mat-label>
+                    <textarea matInput placeholder="reason" type="text" name="reason" #reason="ngModel" [(ngModel)]="data.reason" class="h110" [ngClass]="{'has-error':reason.invalid}"  required ></textarea>
+                  </mat-form-field>
+                  <div class="alert alert-danger" *ngIf="!reason.valid && f.submitted">
+                    Reason is required...
+                  </div>
+                </div>
+              </div> 
+              
+              <div class="row">
+                <div class="col s12">
+                  <div class="cs-btn fixedd text-right">
+                    <div class="in-btn" >
+                      <button mat-raised-button color="accent" type="submit"  >ADD TO LIST</button>
+                    </div> 
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+            
+            <div class="sprate-box cs-form mt10" *ngIf="adjusted_data.length>0" >
+              <div class="cs-heading">
+                <h2>Adjusted Stock</h2>
+              </div> 
+              <mat-divider class="left-right-15 mt10"></mat-divider>
+              <div class="cs-form left-right-10">
+                <div class="cs-table">
+                  <div class="sticky-head">
+                    <div class="table-head border-top">
+                      <table>
+                        <tr>
+                          <th class="w50 text-center">S.No</th>
+                          <th class="w100">Unit</th>
+                          <th class="w100 text-center">Adjustment Type</th>
+                          <th class="w200 text-center">State</th>
+                          <th class="w100 text-center">Category</th>
+                          <th class="w300 text-center">Item Name</th>
+                          <th class="w100 text-center">Current Stock</th>
+                          <th class="w100 text-center">Adustment Stock</th>
+                          <th class="w100 text-center">Reason</th>
+                          <th class="w100 text-center">Action</th>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                  
+                  <div class="table-container">
+                    <div class="table-content none-shadow">
+                      <table >
+                        <tr *ngFor="let list of adjusted_data; let i= index">
+                          <td class="w50 text-center">{{i+1}}</td>
+                          <td class="w100">{{list.organization_name}}</td>
+                          <td class="w100">{{list.adjustment_type}}</td>
+                          <td class="w200 text-center">{{list.state}}</td>
+                          <td class="w100 text-center">{{list.category}}</td>
+                          <td class="w300 text-center">{{list.item_name}}-{{list.brand}}-{{list.unit_of_measurement}}</td>
+                          <td class="w100 text-center">{{list.balance_stock}}</td>
+                          <td class="w100 text-center">{{list.adjustment_stock}}</td>
+                          <td class="w100 text-center">{{list.reason}}</td>
+                          <td class="w100 text-center">
+                            <button mat-button class="delete-mat" ><i class="material-icons red-clr" >delete_sweep</i></button>
+                            
+                          </td>
+                        </tr>
+                        
+                      </table>
+                    </div>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+            
+            
+            <div class="row" *ngIf="adjusted_data.length>0">
+              <div class="col s12">
+                <div class="cs-btn fixedd mt32 text-right">
+                  <div class="in-btn" >
+                    <button mat-raised-button color="accent" type="submit" (click)="submit_stock_information()" >Save</button>
+                  </div> 
+                </div>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+        
+        <!-- </div> -->
+        
+        <!-- <div *ngIf="loader">
+          <mat-spinner class="loader">
+            <div>
+              <p>Loading....</p>
+            </div>
+          </mat-spinner>
+        </div> -->
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,165 @@
+<div class="main-container" >
+  <div class="middle-container">
+    <div class="page-heading">
+      <div class="heading-text">
+        <h2>Finish Good Stock</h2>
+      </div>
+    </div>
+
+    <div class="left-auto">
+      <div class="cs-form"> 
+        <button mat-raised-button color="accent" routerLink="/manual-adjustment-finish-good">Manual Adjustment</button>
+      </div>
+    </div>
+
+  
+      <div class="cs-form  ml10">
+        <mat-form-field class="cs-input w200" appearance="outline">
+          <mat-label>Select Unit</mat-label>
+          <mat-select name="organization" [(ngModel)]="data.organization" >
+            <mat-option *ngFor="let org of organizaton_data" value="{{org.id}}" (click)="state_list()"  >{{org.organization_name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      
+    
+    
+      <div class="cs-form ml10">
+        <mat-form-field class="cs-input w200" appearance="outline">
+          <mat-label>Select state</mat-label>
+          <mat-select name="state" [(ngModel)]="data.state" >
+            <mat-option *ngFor="let row of state_data" value="{{row.state_name}}" (click)="get_production_data()"  >{{row.state_name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      
+    
+  </div>
+
+
+  <div class="container-outer padding0">
+    <div class="container mb60" >
+      <div class="cs-table">
+        <div class="sticky-head">
+          <div class="table-head">
+            <table class="sno-border">
+              <tr>
+                <th class="w30">S.No</th>
+                <th class="w100 text-center">Unit</th>
+                <th class="w100 text-center">State</th>
+                <th class="w100 text-center">Category</th>
+                <th class="w100 text-center">Brand</th>
+                <th class="w100 text-center">item Code</th>
+                <th class="w100 text-center">Size</th>
+                <th class="w100 text-center">Current Stock</th>
+                <th class="w100 text-center">Stock Alert</th>
+                <th class="w100 text-center">Pending Order</th>
+
+                <th class="w100 text-center">Under Production</th>
+                <th class="w150 text-center">Action</th>
+
+               
+              </tr>
+            </table>
+          </div>
+          <div class="table-head bdrt">
+            <table class="sno-border">
+              <tr>
+                <th class="w30 text-center">&nbsp;</th>
+                <th class="w100 text-center">
+                  <!-- <div class="th-search-acmt">
+                    <mat-form-field class="example-full-width cs-input select-input">
+                      <input matInput placeholder="Enter Name...."   name="Unit" #category="ngModel" [(ngModel)]="data.unit" (keyup.enter)="get_production_data()">
+                    </mat-form-field>
+                  </div> -->
+                </th>
+                  <th class="w100 text-center">
+                    <!-- <div class="th-search-acmt">
+                    <mat-form-field class="example-full-width cs-input select-input">
+                      <input matInput placeholder="Enter Name...."   name="state" #state="ngModel" [(ngModel)]="data.state" (keyup.enter)="get_production_data()">
+                    </mat-form-field>
+                  </div> -->
+                </th>
+                  <th class="w100 text-center">
+                    <div class="th-search-acmt">
+                    <mat-form-field class="example-full-width cs-input select-input">
+                      <input matInput placeholder="Enter Name...."   name="category" #category="ngModel" [(ngModel)]="data.category" (keyup.enter)="get_production_data()">
+                    </mat-form-field>
+                  </div></th>
+                  <th class="w100 text-center"><div class="th-search-acmt">
+                    <mat-form-field class="example-full-width cs-input select-input">
+                      <input matInput placeholder="Enter Name...."   name="brand" #brand="ngModel" [(ngModel)]="data.brand" (keyup.enter)="get_production_data()">
+                    </mat-form-field>
+                  </div></th>
+                  <th class="w100 text-center"><div class="th-search-acmt">
+                    <mat-form-field class="example-full-width cs-input select-input">
+                      <input matInput placeholder="Enter Name...."   name="item_code" #item_code="ngModel" [(ngModel)]="data.item_code" (keyup.enter)="get_production_data()">
+                    </mat-form-field>
+                  </div></th>
+                  <th class="w100 text-center">&nbsp;</th>
+                  <th class="w100 text-center">&nbsp;</th>
+                  <th class="w100 text-center">&nbsp;</th>
+                  <th class="w100 text-center">&nbsp;</th>
+                  <th class="w100 text-center">&nbsp;</th>
+                  <th class="w150 text-center">&nbsp;</th>
+                 
+                  
+                </tr>
+              </table>
+            </div> 
+          </div>
+          
+          <div class="table-container">
+            <div class="table-content">
+              <table class="sno-border">
+                <tr *ngFor=" let data of production_data;let i = index">
+                  <td class="w30">{{i+1}}</td>
+                  <td class="w100">{{data.organization_name}}</td> 
+                  <td class="w100 text-center">{{data.state && data.state!=''?data.state : '--'}}</td>
+                  <td class="w100 text-center">{{data.category && data.category!=''?data.category : '--'}}</td>
+                  <td class="w100 text-center">{{data.brand && data.brand!=''?data.brand : '--'}}</td>
+                  <td class="w100 text-center">{{data.item_code && data.item_code!=''?data.item_code : '--'}}</td>
+                  <td class="w100 text-center">{{data.size && data.size!=''?data.size : '--'}}</td>
+                  <td class="w100 text-center">{{data.current_stock?data.current_stock:'--'}}</td>
+                  <td class="w100 text-center">{{data.stock_alert?data.stock_alert:'--'}}</td>
+                  <td class="w100 text-center">{{data.pending_order_stock?data.pending_order_stock:'--'}}</td>
+                  <td class="w100 text-center">{{data.under_processing_stock?data.under_processing_stock:'--'}}</td>
+                  <td class="w150 text-center">
+                    <button mat-raised-button class="delete-mat"  color="accent" routerLink="/FG_DETAILS/{{data.id}}/{{data.assigned_to_org}}/{{data.state}}" routerLinkActive="active">View Transaction</button>
+
+                  </td>
+                 
+                </tr>
+                
+                <!-- <ng-container >
+                  <tr class="sk-loading" >
+                    <td class="w30"><div>&nbsp;</div></td>
+                    <td class="w120"><div>&nbsp;</div></td>
+                    <td class="w180"><div>&nbsp;</div></td>
+                    <td class="w100"><div>&nbsp;</div></td>
+                    <td class="w100"><div>&nbsp;</div></td>
+                    <td class="w100"><div>&nbsp;</div></td>
+                    <td class="w100"><div>&nbsp;</div></td>
+                    <td class="w100"><div>&nbsp;</div></td>
+                    <td class="w100"><div>&nbsp;</div></td>
+                  </tr>
+                </ng-container> -->
+              </table>
+            </div>
+          </div>
+          
+          
+          <div class="no-data" *ngIf="!production_data.length" >
+            <img src="assets/img/no-data.gif" alt="">
+            <p>Data not <span>available !</span></p>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    <div class="fix-btn">
+      <a class="bottom-btn ecxel-btn" matTooltip="Download Excel" matTooltipPosition="above" mat-raised-button (click)="exportAsXLSX()"><img src="assets/img/excel.svg"></a>    
+    </div>
+  </div>
+  
+ 

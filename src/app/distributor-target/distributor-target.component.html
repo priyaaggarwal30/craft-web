@@ -1,0 +1,211 @@
+<div class="main-container" >
+  <div class="middle-container mb0">
+      <div class="page-heading">
+          <div class="heading-text">
+              <h2>Distributor Target List</h2>
+              
+          </div>
+         
+      </div>
+      
+      <div class="left-auto">
+        <div class="uppr-one m-right-data">
+            <ul>
+              <li>
+                <a class="refresh-btn" mat-raised-button (click)="refresh1()"  matTooltip="Refresh" ><i class="material-icons"> refresh</i></a>
+              </li>
+            </ul>
+            <button  mat-raised-button color="accent"  (click)="upload_excel()"><i class="material-icons">backup</i> Upload File</button>
+
+            </div>
+        </div>
+
+      <!-- <div class="left-auto">
+          <div class="click-btn ml15" >
+              <button mat-button (click)="openModal()">Update Admin Panel Details</button>
+          </div>
+      </div> -->
+  </div>
+  
+  <div class="container-outer padding0">
+    <div *ngIf="exp_loader">
+        <mat-spinner class="loader">
+          <div><p>Loading....</p></div>
+        </mat-spinner>
+      </div>
+      <div class="container mb60" >
+          <div class="cs-table">
+              <div class="sticky-head">
+                  <div class="table-head">
+                      <table>
+                          <tr>
+                              <th class="w45 text-center">Sr.No</th>
+                              <th class="w140">Company Name</th>
+                              <th class="w120">Contact Person</th>
+                              <th class="w90">Contact No.</th>
+                              <th class="w130">State</th>
+                              <th class="w90">District</th>
+                              <th class="w100">Assign User</th>
+                              <th class="w110">Year</th>
+                              <th class="w110">Month</th>
+                              <th class="w120">Product Name</th>
+                              <th class="w180">Product Size</th>
+                              <th class="w150">Target</th>
+                              <th class="w120">Achievement</th>
+                             
+                          </tr>
+                      </table>
+                  </div>
+                  <div class="table-head bdrt" >
+                      <table>
+                          
+                          <tr>
+                              <th class="w45 text-center"></th>
+                              <th class="w140">
+                                  <div class="th-search-acmt">
+                                      <mat-form-field class="example-full-width cs-input select-input">
+                                          <input matInput placeholder="Name. . ." (keyup.enter)="get_distributor_list()" #name="ngModel" [(ngModel)]="value.name">
+                                      </mat-form-field>
+                                  </div>
+                              </th>
+                              <th class="w120">
+                              
+                              </th>
+                              <th class="w90">
+                                  <div class="th-search-acmt">
+                                      <mat-form-field>
+                                          <input type="text"  matInput placeholder="Mobile. . ." (keyup.enter)="get_distributor_list()" #mobile="ngModel" [(ngModel)]="value.mobile">
+                                      </mat-form-field>
+                                  </div>
+                              </th>   
+
+                              <th class="w130">
+                                <div class="th-search-acmt">
+                                <mat-form-field  class="cs-input select-input">
+                                    <mat-label>State</mat-label>
+                                    <mat-select class="select-filter" name="state" #state="ngModel"  [(ngModel)]="value.state" (ngModelChange)="getDistrict()">
+                                      <mat-option value="all">All State</mat-option>
+                                      <mat-option *ngFor="let state of state_list" value="{{state}}">{{state}}</mat-option>
+                                    </mat-select>
+                                  </mat-form-field>
+                                  </div>
+                            </th> 
+
+                            <th class="w90">
+                                <div class="th-search-acmt">
+                                <mat-form-field class="cs-input select-input">
+                                    <mat-label>District</mat-label>
+                                    <mat-select  class="select-filter" name="district" #district="ngModel"  [(ngModel)]="value.district" (ngModelChange)="get_distributor_list()">
+                                      <mat-option value="all">All District</mat-option>
+                                      <mat-option *ngFor="let district of district_list" value="{{district}}">{{district}}</mat-option>
+                                    </mat-select>
+                                  </mat-form-field>
+                                  </div>
+                            </th> 
+                            <th class="w100">
+                                <div class="th-search-acmt">
+                                    <mat-form-field class="example-full-width cs-input select-input">
+                                        <input matInput placeholder="Assign User. . ." (keyup.enter)="assignuser_search('assign_user',value.assign_user)" #assign_user="ngModel" [(ngModel)]="value.assign_user">
+                                    </mat-form-field>
+                                </div>
+                            </th> 
+
+                            <th class="w110">
+                                <div class="th-search-acmt">
+                                    <mat-form-field class="cs-input select-input">
+                                      <mat-label>Select Year</mat-label>
+                                   <mat-select name="year" #year="ngModel" [(ngModel)]="value.year" (ngModelChange)="get_distributor_list()">
+                                      <mat-option  value="2020">2020</mat-option>
+                                      <mat-option  value="2021">2021</mat-option>
+                                      <mat-option  value="2022">2022</mat-option>
+                                      <mat-option  value="2023">2023</mat-option>
+                                      <mat-option  value="2024">2024</mat-option>
+                                      <mat-option  value="2025">2025</mat-option>
+                                    </mat-select>
+                                    </mat-form-field>
+                                    </div>
+                              </th>
+                              <th class="w110">
+                                <div class="th-search-acmt">
+                                    <mat-form-field class="cs-input select-input" >
+                                        <mat-label>Select Month</mat-label>
+                                        <mat-select name="month" #month="ngModel" [(ngModel)]="value.month" (ngModelChange)="get_distributor_list()">
+                                        <mat-option  value="January">January</mat-option>
+                                        <mat-option  value="February">February</mat-option>
+                                        <mat-option  value="March">March</mat-option>
+                                        <mat-option  value="April">April</mat-option>
+                                        <mat-option  value="May">May</mat-option>
+                                        <mat-option  value="June">June</mat-option>
+                                        <mat-option  value="July">July</mat-option>
+                                        <mat-option  value="August">August</mat-option>
+                                        <mat-option  value="September">September</mat-option>
+                                        <mat-option  value="October">October</mat-option>
+                                        <mat-option  value="November">November</mat-option>
+                                        <mat-option  value="December">December</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                              </th>
+                             
+                              <th class="w120"></th>
+                              <th class="w180"></th>
+                             
+                              <th class="w150"></th>              
+                              <th class="w120"></th>               
+                          </tr>
+                      </table>
+                  </div>
+              </div>
+              
+              <div class="table-container">
+                 
+                  <div class="table-content">
+                      <table>
+                          <tr *ngFor="let u of distributor_list;let i=index ">
+                              <td class="w45 text-center">{{i+1}}</td>
+                              <td class="w140">{{u.company_name}}</td>
+                              <td class="w120">{{u.name}}</td>
+                              <td class="w90">{{u.mobile}}</td>
+                              <td class="w130">{{u.state}}</td>   
+                              <td class="w90">{{u.district}}</td>   
+                              <td class="w100">{{u.assign_user}}</td>
+                              <td  class="w110">{{u.month}}</td> 
+                              <td  class="w110">{{u.year}}</td>   
+                              <td  class="w120">{{u.product_name}}</td>
+                              <td  class="w180">{{u.productSize}}</td>        
+                              <td  class="w150">{{u.value}}</td>
+                              <td  class="w120">{{u.achieve}}</td>
+                          </tr>  
+                          <ng-container *ngFor="let lead of skelton">
+                              <tr class="sk-loading"  *ngIf="loader">
+                                <td class="w45"><div>&nbsp;</div></td>
+                                <td class="w140"><div>&nbsp;</div></td>
+                                <td class="w100"><div>&nbsp;</div></td>
+                                <td class="w90"><div>&nbsp;</div></td>
+                                <td class="w130"><div>&nbsp;</div></td>
+                                <td class="w90"><div>&nbsp;</div></td>
+                                <td class="w100"><div>&nbsp;</div></td>
+                                <td class="w150"><div>&nbsp;</div></td>
+                                <td class="w120"><div>&nbsp;</div></td>
+
+                              </tr>
+                            </ng-container>
+                      </table>
+                  </div>
+                  
+              </div>
+              
+          </div>
+
+          <div class="no-data" >
+              <img src="assets/img/no-data.gif" alt="">
+              <p>Data not <span>available !</span></p>
+            </div>
+      </div>
+      <div class="fix-btn">
+          <a class="bottom-btn ecxel-btn" matTooltip="Download Excel" matTooltipPosition="above" mat-raised-button (click)="exportAsXLSX()"><img src="assets/img/excel.svg"></a>
+          <!-- <a class="bottom-btn" matTooltip="Add New" matTooltipPosition="above" mat-raised-button routerLink="/user-add"><i class="material-icons">add</i></a> -->
+      </div>
+  </div>
+</div>
+

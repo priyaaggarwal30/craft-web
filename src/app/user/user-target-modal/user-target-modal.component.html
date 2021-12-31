@@ -1,0 +1,125 @@
+<div class="edit-modal">
+  <div mat-dialog-content>
+    <p class="heading">Target</p>
+    <div class="cs-form">
+      <div class="row">
+        <div class="col s2">
+          <mat-form-field class="cs-input"  appearance="outline">
+            <mat-label>Type</mat-label>
+            <mat-select name="type" [(ngModel)]="data.sale_type" (ngModelChange)="data.value = ''">
+              <mat-option value="Primary Sale">Primary Sale</mat-option>
+              <mat-option value="Secondary Sale">Secondary Sale</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col s2">
+          <mat-form-field class="cs-input"  appearance="outline">
+            <mat-label>Year</mat-label>
+            <mat-select name="Year" [(ngModel)]="data.year" (ngModelChange)="data.value = ''">
+              <mat-option value="2020">2020</mat-option>
+              <mat-option value="2021">2021</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col s2">
+          <mat-form-field class="cs-input"  appearance="outline">
+            <mat-label>Month</mat-label>
+            <mat-select  name = "Month"[(ngModel)]="data.month" (ngModelChange)="data.value = ''">
+              <mat-option value='Janaury'>Janaury</mat-option>
+              <mat-option value='February'>February</mat-option>
+              <mat-option value='March'>March</mat-option>
+              <mat-option value='April'>April</mat-option>
+              <mat-option value='May'>May</mat-option>
+              <mat-option value='June'>June</mat-option>
+              <mat-option value='July'>July</mat-option>
+              <mat-option value='August'>August</mat-option>
+              <mat-option value='September'>September</mat-option>
+              <mat-option value='October'>October</mat-option>
+              <mat-option value='November'>November</mat-option>
+              <mat-option value='December'>December</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="" [ngClass]="data.product_name ? 'col s2':'col s4'">
+          <mat-form-field class="cs-input"  appearance="outline">
+            <mat-label>Product</mat-label>
+            <mat-select name="product_name" [(ngModel)]="data.product_name" (ngModelChange)="sizeFunction(); data.value = ''"  >
+              <mat-option *ngFor ="let product of productlist" value='{{product.product_name}}'>{{product.product_name}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col s2" *ngIf="data.product_name">
+          <mat-form-field class="cs-input"  appearance="outline">
+            <mat-label>Size</mat-label>
+            <mat-select name="productSize" [(ngModel)]="data.productSize" (ngModelChange)="data.value = ''">
+              <mat-option *ngFor ="let size of sizeList" value='{{size.product_size}}'>{{size.product_size}}</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="col s2">
+          <div class="df">
+            <mat-form-field class="cs-input"  appearance="outline">
+              <mat-label>Value</mat-label>
+              <input matInput type="text" onkeypress="return event.charCode>=48 && event.charCode<=57" name="value" [(ngModel)]="data.value" required> 
+            </mat-form-field>
+            <a class="add-item ml15" mat-raised-button [disabled]=" !(data.month && data.value && data.year && data.product_name && data.sale_type && data.productSize && data.value && data.value!='')  "><i class="material-icons" (click)="(data.month && data.value && data.year && data.product_name && data.sale_type && data.productSize)?add_data():''">add</i></a>
+          </div>
+        </div>
+      </div>
+
+      <div class="cs-table left-right-10" *ngIf="target_list.length > 0">
+        <div class="sticky-head">
+            <div class="table-head">
+                <table>
+                    <tr>
+                        <th class="w50 text-center"></th>
+                        <th class="w150">Type</th>
+                        <th class="w80">Year</th>
+                        <th class="w100">Month</th>
+                        <th>Product Name</th>
+                        <th>Product Size</th>
+                        <th class="w150 text-right">Value	</th>
+                        <th class="w50 text-center" >Delete</th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="table-container">
+            <div class="table-content">
+                <table>
+                    <tr *ngFor="let row of target_list; let i=index;">
+                      <td class="w50 text-center">{{i + 1}}</td>
+                      <td class="w150">{{row.sale_type}}</td>
+                      <td class="w80">{{row.year}}</td>
+                      <td class="w100">{{row.month}}</td>
+                      <td>{{row.product_name}}</td>                        
+                      <td>{{row.productSize ? row.productSize : 'N/A'}}</td>
+                      <td class="w150 text-right">&#x20B9; {{row.value}}</td>
+                      <td class="w50 text-center" >
+                        <button mat-button class="delete-mat"><i class="material-icons red-clr" (click)="deleteTarget(row.id)">delete_sweep</i></button>
+                      </td>
+                    </tr>  
+                    <!-- <tr>
+                      <td class="w30 text-center">2</td>
+                      <td class="w90">Primary</td>
+                      <td class="w50">2020</td>
+                      <td class="w100">September</td>
+                      <td>Designer Laminated Door</td>
+                      <td class="w100 text-right">&#x20B9; 30,000</td>
+                      <td class="w50 text-center" >
+                        <button mat-button class="delete-mat"><i class="material-icons red-clr">delete_sweep</i></button>
+                      </td>
+                    </tr>   -->
+                </table>
+            </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  <div mat-dialog-actions>
+    <button mat-button  color="accent" [mat-dialog-close]="false">Done</button>
+    <!-- <button mat-button  color="warn" [mat-dialog-close]="false">Cancel</button> -->
+    <!-- <button mat-button color="accent"  >Save</button> -->
+  </div>
+</div>
